@@ -2,6 +2,7 @@
 
 import operator
 import re
+import unicodedata
 
 from sparv.api import Annotation, Config, Output, SourceFilename, SparvErrorMessage, Text, Wildcard, annotator, util
 from sparv.api.util.tagsets import pos_to_upos, suc_to_feats, tagmappings
@@ -83,7 +84,11 @@ def text_headtail(
     """
 
     def escape(t: str) -> str:
-        """Return a string with whitespace characters escaped."""
+        """Return a string with whitespace characters escaped.
+
+        All characters in the Unicode category "Zs" (space separators) are treated as normal spaces.
+        """
+        t = "".join(" " if unicodedata.category(c) == "Zs" else c for c in t)
         return t.replace(" ", "\\s").replace("\n", "\\n").replace("\t", "\\t")
 
     out_head_annotation = chunk.create_empty_attribute()
