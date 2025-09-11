@@ -166,6 +166,13 @@ with the Sparv pipeline when the module is imported. Sparv then calls them as ne
 graph. When you run Sparv, it automatically determines which functions to run to produce the outputs you request,
 resolving all dependencies for you.
 
+> [!IMPORTANT]
+>
+> If your module relies on additional libraries beyond Sparv’s built-in dependencies, especially large or slow-loading
+> ones (for example, `torch`), import them inside the functions that actually use them rather than at the module level.
+> This prevents unnecessary delays in Sparv’s startup time when your module is not in use, since every extra library
+> import contributes to startup overhead.
+
 For more details about the `annotator` decorator and other Sparv decorators, refer to the [Sparv
 decorators](sparv-decorators.md) page.
 
