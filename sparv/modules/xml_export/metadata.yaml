@@ -22,7 +22,7 @@ name:
 short_description:
   swe: XML-korpusexport där varje token skrivs på en egen rad
   eng: XML corpus export where every token is printed on a new line
-sparv_handler: xml_export:pretty
+sparv_processor: xml_export:pretty
 example_output: |-
   ```xml
   <?xml version='1.0' encoding='utf-8'?>
@@ -198,7 +198,7 @@ name:
 short_description:
   swe: XML-korpusexport som bevarar formateringen från källfilen
   eng: XML corpus export preserving whitespaces from source file
-sparv_handler: xml_export:preserved_format
+sparv_processor: xml_export:preserved_format
 example_output: |-
   ```xml
   <?xml version='1.0' encoding='utf-8'?>
@@ -221,7 +221,7 @@ name:
 short_description:
   swe: XML-korpusexport med omkastat innehåll
   eng: XML corpus export with scrambled contents
-sparv_handler: xml_export:scrambled
+sparv_processor: xml_export:scrambled
 example_output: |-
   ```xml
   <document name="rävar">

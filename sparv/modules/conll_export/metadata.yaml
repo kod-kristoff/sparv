@@ -8,7 +8,7 @@ short_description:
 task: export
 keywords:
  - conll-u
-sparv_handler: conll_export:conllu
+sparv_processor: conll_export:conllu
 example_output: |-
   ```
   # global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC
