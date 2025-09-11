@@ -147,6 +147,25 @@ def remove_formatting_characters(text: str, keep: Iterable[str] = ()) -> str:
     return "".join(c for c in text if c in keep or unicodedata.category(c) != "Cf")
 
 
+def normalize_space_separators(text: str, keep: Iterable[str] = ()) -> str:
+    """Replace any space separators with regular spaces.
+
+    The characters replaced are those with the Unicode category "Zs" (space separators), except for regular spaces and
+    those specified in 'keep'.
+    https://www.unicode.org/reports/tr44/#GC_Values_Table
+
+    Args:
+        text: The text to normalize.
+        keep: An iterable of characters to keep.
+
+    Returns:
+        The text with space separators replaced with regular spaces.
+    """
+    if keep is None:
+        keep = []
+    return "".join(c if c in keep or unicodedata.category(c) != "Zs" else " " for c in text)
+
+
 def remove_unassigned_characters(text: str, keep: Iterable[str] = ()) -> str:
     """Remove unassigned characters from the given text, except for those specified in 'keep'.
 
