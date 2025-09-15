@@ -2,6 +2,7 @@
 
 import json
 import operator
+from typing import Any
 
 import typing_inspect
 import yaml
@@ -112,6 +113,17 @@ def print_modules_info(
         """Handle tuples when dumping YAML."""  # noqa: DOC201
         return dumper.represent_sequence("tag:yaml.org,2002:seq", data)
 
+    def get_name(obj: Any) -> str:
+        """Get the name of a type using __name__, falling back to its string representation.
+
+        Args:
+            obj: The object to get the name from.
+
+        Returns:
+            The name of the object.
+        """
+        return getattr(obj, "__name__", str(obj))
+
     yaml.add_representer(str, quoted_representer)
     yaml.add_representer(tuple, tuple_representer)
 
@@ -221,13 +233,13 @@ def print_modules_info(
                                         if args:
                                             if typing_inspect.is_union_type(args[0]):
                                                 args_inner = typing_inspect.get_args(args[0])
-                                                datatypes.append(f"list[{' | '.join(a.__name__ for a in args_inner)}]")
+                                                datatypes.append(f"list[{' | '.join(get_name(a) for a in args_inner)}]")
                                             else:
-                                                datatypes.append(f"list[{args[0].__name__}]")
+                                                datatypes.append(f"list[{get_name(args[0])}]")
                                         else:
                                             datatypes.append("list")
                                     else:
-                                        datatypes.append(cfg_datatype.__name__)
+                                        datatypes.append(get_name(cfg_datatype))
 
                             if config_object.default is not None:
                                 config_info["default"] = config_object.default
@@ -243,7 +255,7 @@ def print_modules_info(
                     for p, (default, typ, li, optional) in params.items():
                         f_data["parameters"][p] = {
                             "optional": optional,
-                            "type": f"list[{typ.__name__}]" if li else typ.__name__,
+                            "type": f"list[{get_name(typ)}]" if li else (get_name(typ)),
                             "default": default,
                         }
                 module_data["functions"][f_name] = f_data
