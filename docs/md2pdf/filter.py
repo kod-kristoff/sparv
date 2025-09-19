@@ -37,7 +37,7 @@ def fix_document(key: str, value: str | list | dict | None, _format: str, _meta:
     # Remove internal links, just keep the text
     if key == "Link":
         url = value[2][0]
-        if url.startswith(("user-manual", "developers-guide")) or ".md#" in url:
+        if url.startswith(("user-manual", "developers-guide")) or ".md" in url:
             return value[1]
 
     elif key == "Image":

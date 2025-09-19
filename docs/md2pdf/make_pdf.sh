@@ -215,9 +215,11 @@ function markdown_to_pdf {
                 -H settings_template.tex `# include in header` \
                 --template template.tex `# use template` \
                 --toc `# table of contents` \
+                --toc-depth=2 `# limit depth of table of contents to 2 levels` \
                 --top-level-division=chapter `# treat top-level headings as chapters` \
                 -N `# numbered sections` \
                 -V urlcolor=RoyalBlue `# color links blue` \
+                -V classoption=openany `# chapters can start on any page` \
                 --listings `# use listings package for LaTeX code blocks`
             ;;
         *)
