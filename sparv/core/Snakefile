@@ -171,7 +171,7 @@ def make_all_files_rule(rule_storage: snake_utils.RuleStorage) -> None:
         # match for that to work (which they don't do once we've expanded the {file} wildcard).
         this_sm_rule = workflow.get_rule(rule_storage.target_name)
         for f in this_sm_rule.input:
-            this_sm_rule.dependencies[f] = sm_rule
+            this_sm_rule.dependencies[f] = sm_rule.name
 
 
 def update_autocompletion_cache() -> None:
@@ -506,7 +506,7 @@ if "export_corpus" in selected_targets:
         if r is None:
             continue
         for f in ff:
-            rules.export_corpus.rule.dependencies[f] = r
+            rules.export_corpus.rule.dependencies[f] = r.name
 
 # Rule for making installations
 if "install_corpus" in selected_targets:
