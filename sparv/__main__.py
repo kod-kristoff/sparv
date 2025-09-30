@@ -441,7 +441,7 @@ def main(argv: list[str] | None = None) -> bool:
     plugins_uninstall_parser = plugins_subparsers.add_parser(
         "uninstall", help="Uninstall Sparv plugin(s)", formatter_class=RichHelpFormatter
     )
-    plugins_uninstall_parser.add_argument("plugin", help="The name of the plugin(s) to uninstall")
+    plugins_uninstall_parser.add_argument("plugin", nargs="+", help="The name of the plugin(s) to uninstall")
     plugins_uninstall_parser.add_argument("-v", "--verbose", action="store_true", help="Show more details")
 
     # Sub-command: check
