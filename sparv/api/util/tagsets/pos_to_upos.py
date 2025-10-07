@@ -60,14 +60,14 @@ def _swe_suc_convert(pos: str) -> str:
     pos_dict = {
         "NN": "NOUN",
         "PM": "PROPN",
-        "VB": "VERB",  # "AUX" ?
+        "VB": "VERB",
         "IE": "PART",
-        "PC": "VERB",  # No ADJ?
-        "PL": "PART",  # No ADV, ADP?
+        "PC": "VERB",
+        "PL": "PART",
         "PN": "PRON",
-        "PS": "DET",  # No PRON?
+        "PS": "DET",
         "HP": "PRON",
-        "HS": "DET",  # No PRON?
+        "HS": "DET",
         "DT": "DET",
         "HD": "DET",
         "JJ": "ADJ",
@@ -77,9 +77,9 @@ def _swe_suc_convert(pos: str) -> str:
         "SN": "SCONJ",
         "PP": "ADP",
         "RG": "NUM",
-        "RO": "ADJ",  # No NUM?
+        "RO": "ADJ",
         "IN": "INTJ",
-        "UO": "X",  # Could be any PoS, most probably a noun /ljo
+        "UO": "X",
         "MAD": "PUNCT",
         "MID": "PUNCT",
         "PAD": "PUNCT",
