@@ -23,10 +23,9 @@ manual](https://github.com/spraakbanken/sparv/releases/latest/download/user-manu
 guide](https://github.com/spraakbanken/sparv/releases/latest/download/developers-guide.pdf) from the [latest
 Sparv release on GitHub](https://github.com/spraakbanken/sparv/releases/latest).
 
-!!! abstract "Cite Sparv"
-    *[Martin Hammarstedt, Anne Schumacher, Lars Borin, Markus Forsberg (2022): Sparv 5 User
-    Manual](https://gup.ub.gu.se/publication/318405?lang=en)* &nbsp;
-    [![BibTeX](../images/bibtex.png)](https://spraakbanken.gu.se/en/research/publications/bibtex/318405)
+!!! abstract "Cite Sparv" *[Martin Hammarstedt, Anne Schumacher Olsson, Lars Borin, Markus Forsberg (2025): Sparv 5.3.0:
+    Språkbanken's Analysis Platform – Technical Report](https://gup.ub.gu.se/publication/354181?lang=en)* &nbsp;
+    [![BibTeX](../images/bibtex.png)](https://spraakbanken.gu.se/en/research/publications/bibtex/354181)
 
 > [!TIP]
 >
