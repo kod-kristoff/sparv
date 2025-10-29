@@ -105,7 +105,7 @@ LABELS = {
 )
 def config(
     corpus_id: Corpus = Corpus(),
-    name: dict = Config("metadata.name"),
+    name: dict | None = Config("metadata.name"),
     korp_name: dict | None = Config("korp.name"),
     description: dict | None = Config("metadata.description"),
     short_description: dict | None = Config("metadata.short_description"),
@@ -183,7 +183,7 @@ def config(
     }
     optional = {
         "description": build_description(description, short_description),
-        "title": korp_name or name,
+        "title": korp_name or name or {"swe": corpus_id, "eng": corpus_id},
         "limited_access": protected,
         "custom_attributes": custom_annotations,
         "morphology": morphology,
@@ -191,6 +191,9 @@ def config(
     }
 
     config_dict.update({k: v for k, v in optional.items() if v})
+
+    if not korp_name and not name:
+        logger.warning("No corpus name specified ('metadata.name'). Using corpus ID as name in Korp config.")
 
     # Use CWB annotations if no specific Korp annotations are specified
     # TODO: Doesn't currently work, as annotations/source_annotations already inherits from export.[source_]annotations
