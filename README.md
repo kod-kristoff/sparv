@@ -50,7 +50,7 @@ Install the dependencies, including the dev dependencies. We recommend that you 
 ```sh
 python3 -m venv venv
 source venv/bin/activate
-pip install -e .[dev]
+pip install -e . --group dev
 ```
 
 Now with the virtual environment activated you can run `pytest` from the `sparv` directory. You can run

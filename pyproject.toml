@@ -36,16 +36,25 @@ dependencies = [
     "typing-inspect==0.9.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
+    {include-group = "lint"},
+    {include-group = "test"},
+    {include-group = "docs"},
+]
+lint = [
+    "ruff"
+]
+test = [
+    "pytest>=8.0.0",
+    "pytest-sugar>=1.0.0"
+]
+docs = [
     "bs4",
     "mkdocs-material==9.6.11",
     "mkdocs-github-admonitions-plugin==0.0.3",
     "mkdocstrings-python==1.16.10",
     "pandocfilters==1.5.1",
-    "pytest>=8.0.0",
-    "pytest-sugar>=1.0.0",
-    "ruff"
 ]
 
 [project.urls]
