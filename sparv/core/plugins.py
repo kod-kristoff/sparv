@@ -1,6 +1,8 @@
 """Functions related to handling plugins."""
 
+import importlib.util
 import json
+import shutil
 import subprocess
 import sys
 from importlib.metadata import Distribution, entry_points
@@ -13,23 +15,28 @@ from rich.table import Table
 from sparv.core.console import console
 
 
-def check_pip() -> bool:
-    """Check if pip is available in the current environment.
+def check_pip_and_uv() -> tuple[bool, str | None]:
+    """Check if pip or uv is available in the current environment.
 
-    Prints an error message if pip is not available.
+    Prints an error message if neither is available.
 
     Returns:
-        True if pip is available, False otherwise.
+        A tuple containing a boolean indicating pip availability and an optional path to uv.
     """
-    try:
-        import pip  # noqa
-    except ImportError:
-        console.print(
-            "[red]ERROR:[/] 'pip' is required to install plugins, but it is not available in the current environment."
-        )
-        return False
+    # Check if pip is available
+    pip_available = importlib.util.find_spec("pip") is not None
 
-    return True
+    # If pip is not available, check for uv
+    uv = shutil.which("uv") if not pip_available else None
+
+    if not pip_available and not uv:
+        console.print(
+            "[red]ERROR:[/] 'pip' or 'uv' is required to install plugins, but neither is available in the current "
+            "environment."
+        )
+        return False, None
+
+    return pip_available, uv
 
 
 def install_plugin(plugin_package: str, editable: bool = True, verbose: bool = False) -> bool:
@@ -43,23 +50,28 @@ def install_plugin(plugin_package: str, editable: bool = True, verbose: bool = F
     Returns:
         True if the plugin was successfully installed, False otherwise.
     """
-    if not check_pip():
+    pip_available, uv = check_pip_and_uv()
+    if not pip_available and not uv:
         return False
 
     extra_args = []
 
     if Path(plugin_package).is_dir():
-        console.print(f"Installing local plugin {plugin_package!r}")
+        console.print(f"Installing local plugin {plugin_package!r}{' in editable mode' if editable else ''}.")
         if editable:
             extra_args.append("-e")
     else:
         console.print(f"Installing plugin {plugin_package!r}")
 
-    result = subprocess.run(
-        [sys.executable, "-m", "pip", "install", *extra_args, plugin_package], capture_output=True, check=False
-    )
+    if pip_available:
+        installer = [sys.executable, "-m", "pip", "install"]
+    else:
+        installer = [uv, "pip", "install", "--python", sys.executable]
+
+    result = subprocess.run([*installer, *extra_args, plugin_package], capture_output=True, check=False)
     if verbose:
         console.print(result.stdout.decode())
+        console.print(result.stderr.decode())
     if result.returncode != 0:
         console.print(f"Plugin {plugin_package!r} could not be installed:\n\n{result.stderr.decode()}")
         return False
@@ -78,21 +90,31 @@ def uninstall_plugin(plugin_name: str, verbose: bool = False) -> bool:
     Returns:
         True if the plugin was successfully uninstalled, False otherwise.
     """
-    if not check_pip():
+    pip_available, uv = check_pip_and_uv()
+    if not pip_available and not uv:
         return False
 
     found_entry_points = {e.name: e for e in entry_points(group="sparv.plugin")}
-    found_entry_points_dist = {e.dist.name: e for e in found_entry_points.values()}
+    found_entry_points_dist = {e.dist.name: e for e in found_entry_points.values() if e.dist}
     entry_point = found_entry_points.get(plugin_name) or found_entry_points_dist.get(plugin_name)
     if not entry_point:
         console.print(f"Plugin {plugin_name!r} is not installed.")
         return False
+    if not entry_point.dist:
+        console.print(
+            f"Cannot determine the installed package for plugin {plugin_name!r}, so it cannot be uninstalled."
+        )
+        return False
 
-    result = subprocess.run(
-        [sys.executable, "-m", "pip", "uninstall", "-y", entry_point.dist.name], capture_output=True, check=False
-    )
+    if pip_available:
+        installer = [sys.executable, "-m", "pip", "uninstall", "-y"]
+    else:
+        installer = [uv, "pip", "uninstall", "--python", sys.executable]
+
+    result = subprocess.run([*installer, entry_point.dist.name], capture_output=True, check=False)
     if verbose:
         console.print(result.stdout.decode())
+        console.print(result.stderr.decode())
     if result.returncode != 0:
         console.print(f"Plugin {plugin_name!r} could not be uninstalled:\n\n{result.stderr.decode()}")
         return False
@@ -119,26 +141,29 @@ def list_installed_plugins(verbose: bool = False) -> None:
         pypi = True
         inner_table = Table(show_header=False, box=None, padding=(0, 1, 0, 0))
 
-        direct_url = Distribution.from_name(entry_point.dist.name).read_text("direct_url.json")
-        pypi = not direct_url
+        if entry_point.dist:
+            direct_url = Distribution.from_name(entry_point.dist.name).read_text("direct_url.json")
+            pypi = not direct_url
 
-        inner_table.add_row(
-            "[i dim]package:[/]",
-            f"[link=https://pypi.org/project/{entry_point.dist.name}/]{entry_point.dist.name}[/link]"
-            if pypi
-            else entry_point.dist.name,
+            inner_table.add_row(
+                "[i dim]package:[/]",
+                f"[link=https://pypi.org/project/{entry_point.dist.name}/]{entry_point.dist.name}[/link]"
+                if pypi
+                else entry_point.dist.name,
+            )
+
+            if verbose:
+                if direct_url:
+                    origin_data = json.loads(direct_url)
+                    url = origin_data.get("url")
+                    is_editable = origin_data.get("dir_info", {}).get("editable", False)
+                    inner_table.add_row("[i dim]source:[/]", f"{url}{' (editable)' if is_editable else ''}")
+                else:
+                    inner_table.add_row("[i dim]source:[/]", "PyPI")
+
+        table.add_row(
+            f"{entry_point.name}", f"[i dim]v{entry_point.dist.version}[/]" if entry_point.dist else "", inner_table
         )
-
-        if verbose:
-            if direct_url:
-                origin_data = json.loads(direct_url)
-                url = origin_data.get("url")
-                is_editable = origin_data.get("dir_info", {}).get("editable", False)
-                inner_table.add_row("[i dim]source:[/]", f"{url}{' (editable)' if is_editable else ''}")
-            else:
-                inner_table.add_row("[i dim]source:[/]", "PyPI")
-
-        table.add_row(f"{entry_point.name}", f"[i dim]v{entry_point.dist.version}[/]", inner_table)
 
     if not plugins:
         table.add_row("No plugins installed.", "", "")

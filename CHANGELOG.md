@@ -5,6 +5,8 @@
 ### Added
 
 - The `sparv plugins` command now supports (un)installing multiple plugins at once.
+- Plugin installation/uninstallation is now possible in environments where `pip` is not available, if `uv` is
+  installed.
 
 ### Changed
 
