@@ -37,8 +37,8 @@ AUTO_FILES="
 ../$MKDOCS_OUTPUT_DIR/developers-guide/utilities/index.html
 "
 
-# Get version number from sparv/__init__.py
-SPARV_VERSION=$(grep -P '(?<=__version__ = ").+(?=")' -o ../../sparv/__init__.py)
+# Get version number from pyproject.toml
+SPARV_VERSION=$(grep -P '(?<=version = ").+(?=")' -o ../../pyproject.toml)
 
 # Title page for the PDF (not used in GU-ISS publication)
 TITLEPAGE="

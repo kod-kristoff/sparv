@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import importlib.metadata
 import subprocess
 import sys
 from collections.abc import Generator
 from typing import Self
 
-__version__ = "5.4.0.dev0"
+__version__ = importlib.metadata.version("sparv")
 
 
 class SparvCall:

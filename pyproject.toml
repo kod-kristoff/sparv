@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sparv"
-dynamic = ["version"]
+version = "5.4.0.dev0"
 description = "Språkbanken's analysis platform"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -55,7 +55,6 @@ Documentation = "https://spraakbanken.gu.se/sparv/"
 sparv = "sparv.__main__:cli"
 
 [tool.hatch]
-version.path = "sparv/__init__.py"
 build.include = ["/sparv"]
 publish.index.disable = true       # Require confirmation to publish
 

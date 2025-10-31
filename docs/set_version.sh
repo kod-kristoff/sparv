@@ -2,8 +2,8 @@
 
 # Set current version number in mkdocs.yml
 
-# Find version number
-SPARV_VERSION=$(grep -o -P '(?<=__version__ = ")(.*)(?=")' ../sparv/__init__.py)
+# Get version number from pyproject.toml
+SPARV_VERSION=$(grep -o -P '(?<=version = ").*(?=")' ../pyproject.toml)
 
 if [[ -z $SPARV_VERSION ]]; then
   echo "Couldn't extract version number"; exit 1
