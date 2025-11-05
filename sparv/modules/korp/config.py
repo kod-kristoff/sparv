@@ -101,6 +101,12 @@ LABELS = {
             default=False,
             datatype=bool,
         ),
+        Config(
+            "korp.languages",
+            description="List of languages used in the Korp interface",
+            default=["swe", "eng"],
+            datatype=list[str],
+        ),
     ],
 )
 def config(
@@ -136,6 +142,7 @@ def config(
     remote_host: str | None = Config("korp.remote_host"),
     config_dir: str = Config("korp.config_dir"),
     keep_undefined_annotations: bool = Config("korp.keep_undefined_annotations"),
+    languages: list[str] = Config("korp.languages"),
     out: Export = Export("korp.config/[metadata.id].yaml"),
 ) -> None:
     """Create Korp config file for the corpus, to be served by the Korp backend and used by the frontend.
@@ -174,8 +181,10 @@ def config(
         config_dir: Path on remote host where Korp configuration files are located.
         keep_undefined_annotations: Set to True to include all annotations in config, even those without an annotation
             definition/preset.
+        languages: List of languages used in the Korp interface.
         out: YAML file to create.
     """
+    corpus_name = get_corpus_name([korp_name, name], corpus_id, languages)
     config_dict = {
         "id": corpus_id,
         "lang": language,
@@ -183,7 +192,7 @@ def config(
     }
     optional = {
         "description": build_description(description, short_description),
-        "title": korp_name or name or {"swe": corpus_id, "eng": corpus_id},
+        "title": corpus_name,
         "limited_access": protected,
         "custom_attributes": custom_annotations,
         "morphology": morphology,
@@ -191,9 +200,6 @@ def config(
     }
 
     config_dict.update({k: v for k, v in optional.items() if v})
-
-    if not korp_name and not name:
-        logger.warning("No corpus name specified ('metadata.name'). Using corpus ID as name in Korp config.")
 
     # Use CWB annotations if no specific Korp annotations are specified
     # TODO: Doesn't currently work, as annotations/source_annotations already inherits from export.[source_]annotations
@@ -480,6 +486,45 @@ def build_description(description: dict | str | None, short_description: dict | 
             lang_dict[lang] = descr
 
     return lang_dict.get(None) or lang_dict
+
+
+def get_corpus_name(
+    name_sources: list[dict | None],
+    corpus_id: str,
+    languages: list[str],
+) -> dict:
+    """Get the corpus name to use in Korp, falling back to corpus_id if no name is found.
+
+    Args:
+        name_sources: List of name sources.
+        corpus_id: Corpus ID.
+        languages: List of languages.
+
+    Returns:
+        Dictionary of corpus names for each language.
+    """
+    # Check name sources in order
+    for source in name_sources:
+        if source:
+            corpus_name = {}
+            for lang in languages:
+                if source.get(lang):  # Ignore empty strings
+                    corpus_name[lang] = source[lang]
+            if corpus_name:
+                # Fill in missing languages
+                first_value = next(iter(corpus_name.values()))
+                for lang in languages:
+                    if lang not in corpus_name:
+                        corpus_name[lang] = first_value
+                        logger.warning(
+                            "Corpus name for language %r not found. Using name from another language: %r",
+                            lang,
+                            first_value,
+                        )
+                return corpus_name
+    # Fallback to corpus_id
+    logger.warning("No corpus name specified ('metadata.name'). Using corpus ID as name.")
+    return dict.fromkeys(languages, corpus_id)
 
 
 @installer("Install Korp corpus configuration file.", uninstaller="korp:uninstall_config", priority=-1)
