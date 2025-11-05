@@ -6,7 +6,7 @@ Sparv's documentation is written in markdown and can be rendered as HTML or PDF.
 ## Generate HTML documentation
 
 To build the HTML version of the documentation we are using `mkdocs`. Install the optional `dev` dependencies to get
-the necessary tools, i.e. by running `pip install -e . --group dev` in the Sparv root directory.
+the necessary tools, i.e. by running `pip install . --group dev` in the Sparv root directory.
 
 ### Serve documentation with mkdocs
 

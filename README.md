@@ -51,7 +51,7 @@ dependencies using pip:
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e . --group dev
+pip install -e . && pip install . --group dev
 ```
 
 ### Running tests
