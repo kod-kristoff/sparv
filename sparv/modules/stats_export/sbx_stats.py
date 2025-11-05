@@ -118,7 +118,7 @@ def conditional_best_complemgram(
     out_complemgrams.write(short_complemgrams)
 
 
-@exporter("Corpus word frequency list", language=["swe"], order=1)
+@exporter("Corpus word frequency list", language=["swe"])
 def sbx_freq_list(
     source_files: AllSourceFilenames = AllSourceFilenames(),
     word: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:word>"),
@@ -170,7 +170,7 @@ def sbx_freq_list(
     )
 
 
-@exporter("Corpus word frequency list (compressed)", language=["swe"], order=1)
+@exporter("Corpus word frequency list (compressed)", language=["swe"])
 def sbx_freq_list_compressed(
     stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
     out_file: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"),
@@ -259,14 +259,14 @@ def sbx_freq_list_date_compressed(
     compress(stats_file, out_file, compression)
 
 
-@exporter("Corpus word frequency list (without Swedish annotations)", language=["swe"], order=2)
+@exporter("Corpus word frequency list (without Swedish annotations)", language=["swe"], order=1)
 def sbx_freq_list_simple_swe(
     source_files: AllSourceFilenames = AllSourceFilenames(),
     token: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>"),
     word: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:word>"),
     pos: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:pos>"),
     baseform: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>:stats_export.baseform_first"),
-    out: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
+    out: Export = Export("stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv"),
     delimiter: str = Config("stats_export.delimiter"),
     cutoff: int = Config("stats_export.cutoff"),
 ) -> None:
@@ -298,10 +298,12 @@ def sbx_freq_list_simple_swe(
     )
 
 
-@exporter("Corpus word frequency list (without Swedish annotations, compressed)", language=["swe"], order=2)
+@exporter("Corpus word frequency list (without Swedish annotations, compressed)", language=["swe"], order=1)
 def sbx_freq_list_simple_swe_compressed(
-    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
-    out_file: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"),
+    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv"),
+    out_file: Export = Export(
+        "stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv.[stats_export.compression]"
+    ),
     compression: str = Config("stats_export.compression"),
 ) -> None:
     """Compress simple Swedish statistics file.
@@ -314,14 +316,14 @@ def sbx_freq_list_simple_swe_compressed(
     compress(stats_file, out_file, compression)
 
 
-@exporter("Corpus word frequency list (without Swedish annotations)", order=3)
+@exporter("Corpus word frequency list (without Swedish annotations)", order=2)
 def sbx_freq_list_simple(
     source_files: AllSourceFilenames = AllSourceFilenames(),
     token: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>"),
     word: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:word>"),
     pos: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:pos>"),
     baseform: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:baseform>"),
-    out: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
+    out: Export = Export("stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv"),
     delimiter: str = Config("stats_export.delimiter"),
     cutoff: int = Config("stats_export.cutoff"),
 ) -> None:
@@ -353,10 +355,12 @@ def sbx_freq_list_simple(
     )
 
 
-@exporter("Corpus word frequency list (without Swedish annotations, compressed)", order=3)
+@exporter("Corpus word frequency list (without Swedish annotations, compressed)", order=2)
 def sbx_freq_list_simple_compressed(
-    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
-    out_file: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"),
+    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv"),
+    out_file: Export = Export(
+        "stats_export.frequency_list_sbx_simple/stats_[metadata.id].csv.[stats_export.compression]"
+    ),
     compression: str = Config("stats_export.compression"),
 ) -> None:
     """Compress simple statistics file.
@@ -369,7 +373,7 @@ def sbx_freq_list_simple_compressed(
     compress(stats_file, out_file, compression)
 
 
-@exporter("Corpus word frequency list for Swedish from the 1800's", language=["swe-1800"], order=4)
+@exporter("Corpus word frequency list for Swedish from the 1800's", language=["swe-1800"])
 def sbx_freq_list_1800(
     source_files: AllSourceFilenames = AllSourceFilenames(),
     word: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:word>"),
@@ -379,7 +383,7 @@ def sbx_freq_list_1800(
     sense: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>:hist.sense"),
     lemgram: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>:stats_export.lemgram_first"),
     complemgram: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>:stats_export.complemgram_best_cond"),
-    out: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
+    out: Export = Export("stats_export.frequency_list_sbx_1800/stats_[metadata.id].csv"),
     delimiter: str = Config("stats_export.delimiter"),
     cutoff: int = Config("stats_export.cutoff"),
 ) -> None:
@@ -421,10 +425,12 @@ def sbx_freq_list_1800(
     )
 
 
-@exporter("Corpus word frequency list for Swedish from the 1800's (compressed)", language=["swe-1800"], order=4)
+@exporter("Corpus word frequency list for Swedish from the 1800's (compressed)", language=["swe-1800"])
 def sbx_freq_list_1800_compressed(
-    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
-    out_file: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"),
+    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx_1800/stats_[metadata.id].csv"),
+    out_file: Export = Export(
+        "stats_export.frequency_list_sbx_1800/stats_[metadata.id].csv.[stats_export.compression]"
+    ),
     compression: str = Config("stats_export.compression"),
 ) -> None:
     """Compress 1800's Swedish statistics file.
@@ -437,14 +443,14 @@ def sbx_freq_list_1800_compressed(
     compress(stats_file, out_file, compression)
 
 
-@exporter("Corpus word frequency list for Old Swedish (without part-of-speech)", language=["swe-fsv"], order=5)
+@exporter("Corpus word frequency list for Old Swedish (without part-of-speech)", language=["swe-fsv"])
 def sbx_freq_list_fsv(
     source_files: AllSourceFilenames = AllSourceFilenames(),
     token: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token>"),
     word: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:word>"),
     baseform: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:baseform>"),
     lemgram: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:lemgram>"),
-    out: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
+    out: Export = Export("stats_export.frequency_list_sbx_fsv/stats_[metadata.id].csv"),
     delimiter: str = Config("stats_export.delimiter"),
     cutoff: int = Config("stats_export.cutoff"),
 ) -> None:
@@ -476,12 +482,10 @@ def sbx_freq_list_fsv(
     )
 
 
-@exporter(
-    "Corpus word frequency list for Old Swedish (without part-of-speech, compressed)", language=["swe-fsv"], order=5
-)
+@exporter("Corpus word frequency list for Old Swedish (without part-of-speech, compressed)", language=["swe-fsv"])
 def sbx_freq_list_fsv_compressed(
-    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
-    out_file: Export = Export("stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"),
+    stats_file: ExportInput = ExportInput("stats_export.frequency_list_sbx_fsv/stats_[metadata.id].csv"),
+    out_file: Export = Export("stats_export.frequency_list_sbx_fsv/stats_[metadata.id].csv.[stats_export.compression]"),
     compression: str = Config("stats_export.compression"),
 ) -> None:
     """Compress Old Swedish statistics file.
@@ -494,285 +498,138 @@ def sbx_freq_list_fsv_compressed(
     compress(stats_file, out_file, compression)
 
 
-@installer("Install SBX word frequency list on remote host", uninstaller="stats_export:uninstall_sbx_freq_list")
-def install_sbx_freq_list(
-    freq_list: ExportInput = ExportInput("stats_export.frequency_list_sbx/stats_[metadata.id].csv"),
-    marker: OutputMarker = OutputMarker("stats_export.install_sbx_freq_list_marker"),
-    uninstall_marker: MarkerOptional = MarkerOptional("stats_export.uninstall_sbx_freq_list_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    target_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Install frequency list on server by rsyncing, or install to an SVN repository.
+for inst in (
+    {"suffix": "", "description": "", "extension": ""},
+    {
+        "suffix": "_compressed",
+        "dir_suffix": "",
+        "description": " (compressed)",
+        "extension": ".[stats_export.compression]",
+    },
+    {"suffix": "_date", "description": " with dates", "extension": ""},
+    {
+        "suffix": "_date_compressed",
+        "dir_suffix": "",
+        "description": " with dates (compressed)",
+        "extension": ".[stats_export.compression]",
+    },
+    {"suffix": "_simple", "description": " (without Swedish annotations)", "extension": ""},
+    {
+        "suffix": "_simple_compressed",
+        "dir_suffix": "_simple",
+        "description": " (without Swedish annotations, compressed)",
+        "extension": ".[stats_export.compression]",
+    },
+    {"suffix": "_fsv", "description": " for Old Swedish (without part-of-speech)", "extension": ""},
+    {
+        "suffix": "_fsv_compressed",
+        "dir_suffix": "_fsv",
+        "description": " for Old Swedish (without part-of-speech, compressed)",
+        "extension": ".[stats_export.compression]",
+    },
+    {"suffix": "_1800", "description": " for Swedish from the 1800's", "extension": ""},
+    {
+        "suffix": "_1800_compressed",
+        "dir_suffix": "_1800",
+        "description": " for Swedish from the 1800's (compressed)",
+        "extension": ".[stats_export.compression]",
+    },
+):
 
-    Args:
-        freq_list: Path to frequency list.
-        marker: Output marker.
-        uninstall_marker: Uninstall marker.
-        host: Remote host.
-        target_dir: Remote directory.
+    @installer(
+        f"Install SBX word frequency list{inst['description']} on remote host",
+        name=f"install_sbx_freq_list{inst['suffix']}",
+        uninstaller=f"stats_export:uninstall_sbx_freq_list{inst['suffix']}",
+    )
+    def install_sbx_freq_list(
+        freq_list: ExportInput = ExportInput(
+            f"stats_export.frequency_list_sbx{inst.get('dir_suffix', inst['suffix'])}/"
+            f"stats_[metadata.id].csv{inst['extension']}"
+        ),
+        marker: OutputMarker = OutputMarker(f"stats_export.install_sbx_freq_list{inst['suffix']}_marker"),
+        uninstall_marker: MarkerOptional = MarkerOptional(
+            f"stats_export.uninstall_sbx_freq_list{inst['suffix']}_marker"
+        ),
+        host: str | None = Config("stats_export.remote_host"),
+        target_dir: str = Config("stats_export.remote_dir"),
+    ) -> None:
+        """Install frequency list on server by rsyncing, or install to an SVN repository.
 
-    Raises:
-        SparvErrorMessage: If neither host nor target directory is specified.
-    """
-    if not target_dir:
-        raise SparvErrorMessage("Target directory must be specified.")
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + Path(freq_list).name
-        util.install.install_svn(freq_list, url, remove_existing=True)
-    else:
-        util.install.install_path(freq_list, host, target_dir)
-    uninstall_marker.remove()
-    marker.write()
+        Args:
+            freq_list: Path to frequency list.
+            marker: Output marker.
+            uninstall_marker: Uninstall marker.
+            host: Remote host.
+            target_dir: Remote directory.
 
-
-@installer(
-    "Install SBX word frequency list on remote host (compressed)",
-    uninstaller="stats_export:uninstall_sbx_freq_list_compressed",
-)
-def install_sbx_freq_list_compressed(
-    freq_list: ExportInput = ExportInput(
-        "stats_export.frequency_list_sbx/stats_[metadata.id].csv.[stats_export.compression]"
-    ),
-    marker: OutputMarker = OutputMarker("stats_export.install_sbx_freq_list_compressed_marker"),
-    uninstall_marker: MarkerOptional = MarkerOptional("stats_export.uninstall_sbx_freq_list_compressed_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    target_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Install compressed frequency list on server by rsyncing, or install to an SVN repository.
-
-    Args:
-        freq_list: Path to frequency list.
-        marker: Output marker.
-        uninstall_marker: Uninstall marker.
-        host: Remote host.
-        target_dir: Remote directory.
-
-    Raises:
-        SparvErrorMessage: If neither host nor target directory is specified.
-    """
-    if not target_dir:
-        raise SparvErrorMessage("Target directory must be specified.")
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + Path(freq_list).name
-        util.install.install_svn(freq_list, url, remove_existing=True)
-    else:
-        util.install.install_path(freq_list, host, target_dir)
-    uninstall_marker.remove()
-    marker.write()
-
-
-@installer(
-    "Install SBX word frequency list with dates on remote host", uninstaller="stats_export:uninstall_sbx_freq_list_date"
-)
-def install_sbx_freq_list_date(
-    freq_list: ExportInput = ExportInput("stats_export.frequency_list_sbx_date/stats_[metadata.id].csv"),
-    marker: OutputMarker = OutputMarker("stats_export.install_sbx_freq_list_date_marker"),
-    uninstall_marker: MarkerOptional = MarkerOptional("stats_export.uninstall_sbx_freq_list_date_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    target_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Install frequency list with dates on server by rsyncing, or install to an SVN repository.
-
-    Args:
-        freq_list: Path to frequency list.
-        marker: Output marker.
-        uninstall_marker: Uninstall marker.
-        host: Remote host.
-        target_dir: Remote directory.
-
-    Raises:
-        SparvErrorMessage: If neither host nor target directory is specified.
-    """
-    if not target_dir:
-        raise SparvErrorMessage("Target directory must be specified.")
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + Path(freq_list).name
-        util.install.install_svn(freq_list, url, remove_existing=True)
-    else:
-        util.install.install_path(freq_list, host, target_dir)
-    uninstall_marker.remove()
-    marker.write()
+        Raises:
+            SparvErrorMessage: If neither host nor target directory is specified.
+        """
+        if not target_dir:
+            raise SparvErrorMessage("Target directory must be specified.")
+        if host and host.startswith("svn+"):
+            url = host.rstrip("/") + "/" + Path(freq_list).name
+            util.install.install_svn(freq_list, url, remove_existing=True)
+        else:
+            util.install.install_path(freq_list, host, target_dir)
+        uninstall_marker.remove()
+        marker.write()
 
 
-@installer(
-    "Install SBX word frequency list with dates on remote host (compressed)",
-    uninstaller="stats_export:uninstall_sbx_freq_list_date_compressed",
-)
-def install_sbx_freq_list_date_compressed(
-    freq_list: ExportInput = ExportInput(
-        "stats_export.frequency_list_sbx_date/stats_[metadata.id].csv.[stats_export.compression]"
-    ),
-    marker: OutputMarker = OutputMarker("stats_export.install_sbx_freq_list_date_compressed_marker"),
-    uninstall_marker: MarkerOptional = MarkerOptional("stats_export.uninstall_sbx_freq_list_date_compressed_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    target_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Install compressed frequency list with dates on server by rsyncing, or install to an SVN repository.
+for uninst in (
+    {"suffix": "", "description": "", "compressed": False},
+    {"suffix": "_compressed", "description": " (compressed)", "compressed": True},
+    {"suffix": "_date", "description": " with dates", "compressed": False},
+    {"suffix": "_date_compressed", "description": " with dates (compressed)", "compressed": True},
+    {"suffix": "_simple", "description": " (without Swedish annotations)", "compressed": False},
+    {"suffix": "_simple_compressed", "description": " (without Swedish annotations, compressed)", "compressed": True},
+    {"suffix": "_fsv", "description": " for Old Swedish (without part-of-speech)", "compressed": False},
+    {
+        "suffix": "_fsv_compressed",
+        "description": " for Old Swedish (without part-of-speech, compressed)",
+        "compressed": True,
+    },
+    {"suffix": "_1800", "description": " for Swedish from the 1800's", "compressed": False},
+    {"suffix": "_1800_compressed", "description": " for Swedish from the 1800's (compressed)", "compressed": True},
+):
 
-    Args:
-        freq_list: Path to frequency list.
-        marker: Output marker.
-        uninstall_marker: Uninstall marker.
-        host: Remote host.
-        target_dir: Remote directory.
+    @uninstaller(
+        f"Uninstall SBX word frequency list{uninst['description']}", name=f"uninstall_sbx_freq_list{uninst['suffix']}"
+    )
+    def uninstall_sbx_freq_list(
+        corpus_id: Corpus = Corpus(),
+        marker: OutputMarker = OutputMarker(f"stats_export.uninstall_sbx_freq_list{uninst['suffix']}_marker"),
+        install_marker: MarkerOptional = MarkerOptional(f"stats_export.install_sbx_freq_list{uninst['suffix']}_marker"),
+        host: str | None = Config("stats_export.remote_host"),
+        remote_dir: str = Config("stats_export.remote_dir"),
+        compression: str = Config("stats_export.compression"),
+        use_compression: bool = uninst["compressed"],
+    ) -> None:
+        """Uninstall SBX word frequency list.
 
-    Raises:
-        SparvErrorMessage: If neither host nor target directory is specified.
-    """
-    if not target_dir:
-        raise SparvErrorMessage("Target directory must be specified.")
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + Path(freq_list).name
-        util.install.install_svn(freq_list, url, remove_existing=True)
-    else:
-        util.install.install_path(freq_list, host, target_dir)
-    uninstall_marker.remove()
-    marker.write()
+        Args:
+            corpus_id: The corpus ID.
+            marker: Output marker.
+            install_marker: Install marker.
+            host: Remote host.
+            remote_dir: Remote directory.
+            compression: The compression method used.
+            use_compression: Whether the file to uninstall is compressed.
 
+        Raises:
+            SparvErrorMessage: If neither host nor remote directory is specified.
+        """
+        if not remote_dir:
+            raise SparvErrorMessage("Remote directory must be specified.")
 
-@uninstaller("Uninstall SBX word frequency list")
-def uninstall_sbx_freq_list(
-    corpus_id: Corpus = Corpus(),
-    marker: OutputMarker = OutputMarker("stats_export.uninstall_sbx_freq_list_marker"),
-    install_marker: MarkerOptional = MarkerOptional("stats_export.install_sbx_freq_list_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    remote_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Uninstall SBX word frequency list.
-
-    Args:
-        corpus_id: The corpus ID.
-        marker: Output marker.
-        install_marker: Install marker.
-        host: Remote host.
-        remote_dir: Remote directory.
-
-    Raises:
-        SparvErrorMessage: If neither host nor remote directory is specified.
-    """
-    if not remote_dir:
-        raise SparvErrorMessage("Remote directory must be specified.")
-
-    uninstall_file = f"stats_{corpus_id}.csv"
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + uninstall_file
-        util.install.uninstall_svn(url)
-    else:
-        remote_dir = remote_dir or ""
-        remote_file = Path(remote_dir) / uninstall_file
-        logger.info("Removing SBX word frequency file %s%s", host + ":" if host else "", remote_file)
-        util.install.uninstall_path(remote_file, host)
-    install_marker.remove()
-    marker.write()
-
-
-@uninstaller("Uninstall SBX word frequency list (compressed)")
-def uninstall_sbx_freq_list_compressed(
-    corpus_id: Corpus = Corpus(),
-    marker: OutputMarker = OutputMarker("stats_export.uninstall_sbx_freq_list_compressed_marker"),
-    install_marker: MarkerOptional = MarkerOptional("stats_export.install_sbx_freq_list_compressed_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    remote_dir: str = Config("stats_export.remote_dir"),
-    compression: str = Config("stats_export.compression"),
-) -> None:
-    """Uninstall compressed SBX word frequency list.
-
-    Args:
-        corpus_id: The corpus ID.
-        marker: Output marker.
-        install_marker: Install marker.
-        host: Remote host.
-        remote_dir: Remote directory.
-        compression: The compression method used.
-
-    Raises:
-        SparvErrorMessage: If neither host nor remote directory is specified.
-    """
-    if not remote_dir:
-        raise SparvErrorMessage("Remote directory must be specified.")
-
-    uninstall_file = f"stats_{corpus_id}.csv.{compression}"
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + uninstall_file
-        util.install.uninstall_svn(url)
-    else:
-        remote_dir = remote_dir or ""
-        remote_file = Path(remote_dir) / uninstall_file
-        logger.info("Removing SBX word frequency file %s%s", host + ":" if host else "", remote_file)
-        util.install.uninstall_path(remote_file, host)
-    install_marker.remove()
-    marker.write()
-
-
-@uninstaller("Uninstall SBX word frequency list with dates")
-def uninstall_sbx_freq_list_date(
-    corpus_id: Corpus = Corpus(),
-    marker: OutputMarker = OutputMarker("stats_export.uninstall_sbx_freq_list_date_marker"),
-    install_marker: MarkerOptional = MarkerOptional("stats_export.install_sbx_freq_list_date_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    remote_dir: str = Config("stats_export.remote_dir"),
-) -> None:
-    """Uninstall SBX word frequency list with dates.
-
-    Args:
-        corpus_id: The corpus ID.
-        marker: Output marker.
-        install_marker: Install marker.
-        host: Remote host.
-        remote_dir: Remote directory.
-
-    Raises:
-        SparvErrorMessage: If neither host nor remote directory is specified.
-    """
-    if not remote_dir:
-        raise SparvErrorMessage("Remote directory must be specified.")
-
-    uninstall_file = f"stats_{corpus_id}.csv"
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + uninstall_file
-        util.install.uninstall_svn(url)
-    else:
-        remote_dir = remote_dir or ""
-        remote_file = Path(remote_dir) / uninstall_file
-        logger.info("Removing SBX word frequency with dates file %s%s", host + ":" if host else "", remote_file)
-        util.install.uninstall_path(remote_file, host)
-    install_marker.remove()
-    marker.write()
-
-
-@uninstaller("Uninstall SBX word frequency list with dates (compressed)")
-def uninstall_sbx_freq_list_date_compressed(
-    corpus_id: Corpus = Corpus(),
-    marker: OutputMarker = OutputMarker("stats_export.uninstall_sbx_freq_list_date_compressed_marker"),
-    install_marker: MarkerOptional = MarkerOptional("stats_export.install_sbx_freq_list_date_compressed_marker"),
-    host: str | None = Config("stats_export.remote_host"),
-    remote_dir: str = Config("stats_export.remote_dir"),
-    compression: str = Config("stats_export.compression"),
-) -> None:
-    """Uninstall compressed SBX word frequency list with dates.
-
-    Args:
-        corpus_id: The corpus ID.
-        marker: Output marker.
-        install_marker: Install marker.
-        host: Remote host.
-        remote_dir: Remote directory.
-        compression: The compression method used.
-
-    Raises:
-        SparvErrorMessage: If neither host nor remote directory is specified.
-    """
-    if not remote_dir:
-        raise SparvErrorMessage("Remote directory must be specified.")
-
-    uninstall_file = f"stats_{corpus_id}.csv.{compression}"
-    if host and host.startswith("svn+"):
-        url = host.rstrip("/") + "/" + uninstall_file
-        util.install.uninstall_svn(url)
-    else:
-        remote_dir = remote_dir or ""
-        remote_file = Path(remote_dir) / uninstall_file
-        logger.info("Removing SBX word frequency with dates file %s%s", host + ":" if host else "", remote_file)
-        util.install.uninstall_path(remote_file, host)
-    install_marker.remove()
-    marker.write()
+        uninstall_file = f"stats_{corpus_id}.csv" + (f".{compression}" if use_compression else "")
+        if host and host.startswith("svn+"):
+            url = host.rstrip("/") + "/" + uninstall_file
+            util.install.uninstall_svn(url)
+        else:
+            remote_dir = remote_dir or ""
+            remote_file = Path(remote_dir) / uninstall_file
+            logger.info("Removing SBX word frequency file %s%s", host + ":" if host else "", remote_file)
+            util.install.uninstall_path(remote_file, host)
+        install_marker.remove()
+        marker.write()
