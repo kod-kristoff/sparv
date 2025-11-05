@@ -5,7 +5,7 @@ import subprocess
 import xml.etree.ElementTree as etree  # noqa: N813
 import xml.sax.saxutils
 
-from sparv.api import Annotation, Binary, Config, Output, Source, SparvErrorMessage, annotator, get_logger, util
+from sparv.api import Annotation, Binary, Config, Output, SourceFilename, SparvErrorMessage, annotator, get_logger, util
 
 logger = get_logger(__name__)
 
@@ -38,7 +38,7 @@ def annotate(
     word: Annotation = Annotation("<token:word>"),
     sentence: Annotation = Annotation("<sentence>"),
     token: Annotation = Annotation("<token>"),
-    source: Source = Source(),
+    source: SourceFilename = SourceFilename(),
     binary: Binary = Binary("[swener.binary]"),
     timeout: int = Config("swener.timeout"),
     _process_dict: dict | None = None,
@@ -228,4 +228,4 @@ def swenerstart(binary: str, stdin: str, encoding: str) -> subprocess.Popen:
     Returns:
         The started SweNER process.
     """
-    return util.system.call_binary(binary, [], stdin, encoding=encoding, return_command=True)
+    return util.system.call_binary(binary, [], stdin, encoding=encoding, return_command=True)  # type: ignore
