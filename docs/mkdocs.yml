@@ -27,6 +27,7 @@ theme:
     - search.highlight
     - search.share
     - content.code.copy
+    - content.tabs.link  # Linked content tabs
   icon:
     admonition:
       note: octicons/tag-16
@@ -72,10 +73,12 @@ extra_css:
 markdown_extensions:
   - admonition
   - attr_list  # Needed for image alignment
-  - pymdownx.highlight
+  - pymdownx.highlight  # Syntax highlighting
   - pymdownx.superfences  # Needed by highlighting
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
-      permalink: true
+      permalink: true  # Add a link icon to each header
 plugins:
   - search
   - mkdocstrings:  # https://mkdocstrings.github.io/

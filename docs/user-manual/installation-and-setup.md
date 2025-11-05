@@ -17,29 +17,58 @@ Linux](https://docs.microsoft.com/en-us/windows/wsl/about)) with [Python 3.11](h
 ## Installing Sparv
 
 Sparv is available on [PyPI](https://pypi.org/project/sparv/) and can be installed via
-[pip](https://pip.pypa.io/en/stable/installation/) or [pipx](https://pipx.pypa.io/stable/).
-We recommend using pipx, as it installs Sparv in an isolated environment but allows it to be run from any location.
+[pip](https://pip.pypa.io/en/stable/installation/), [uv](https://docs.astral.sh/uv/), or
+[pipx](https://pipx.pypa.io/stable/). We recommend using uv or pipx, as both install Sparv in an isolated environment
+while allowing it to be run from any location.
 
-Begin by [installing pipx](https://pipx.pypa.io/stable/installation/):
+=== "uv"
 
-```sh
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-```
+    Begin by [installing uv](https://docs.astral.sh/uv/getting-started/installation/):
 
-Then, install Sparv:
+    On Linux and macOS:
+    ```sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
 
-```sh
-pipx install sparv
-```
+    On Windows:
+    ```powershell
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    ```
 
-To verify that Sparv was installed successfully, run the command `sparv`. You should see the Sparv help information
-displayed.
+    Refer to the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for more details and
+    alternative installation methods.
 
-> [!NOTE]
->
-> If pipx stops working after a Python upgrade, try running `pipx reinstall-all`. If that fails, you may need to
-> manually delete pipx's local environment directory (usually `~/.local/pipx`) and reinstall Sparv.
+    Then, install Sparv:
+
+    ```sh
+    uv tool install sparv
+    ```
+
+    To verify that Sparv was installed successfully, run the command `sparv`. You should see the Sparv help information
+    displayed.
+
+=== "pipx"
+
+    Begin by [installing pipx](https://pipx.pypa.io/stable/installation/):
+
+    ```sh
+    python3 -m pip install --user pipx
+    python3 -m pipx ensurepath
+    ```
+
+    Then, install Sparv:
+
+    ```sh
+    pipx install sparv
+    ```
+
+    To verify that Sparv was installed successfully, run the command `sparv`. You should see the Sparv help information
+    displayed.
+
+    !!! Note
+    
+        If pipx stops working after a Python upgrade, try running `pipx reinstall-all`. If that fails, you may need to
+        manually delete pipx's local environment directory (usually `~/.local/pipx`) and reinstall Sparv.
 
 ## Setting Up Sparv
 
@@ -356,12 +385,22 @@ To uninstall Sparv completely, follow these steps:
 1. Run `sparv setup --reset` to unset [Sparv's data directory](#setting-up-sparv). The directory itself will not be
    removed, but its location (if available) will be printed.
 2. Manually delete the data directory.
-3. Run one of the following commands, depending on whether you installed Sparv using pipx or pip:
+3. Run one of the following commands, depending on whether you installed Sparv using uv, pipx, or pip:
 
-    ```sh
-    pipx uninstall sparv
-    ```
+    === "uv"
 
-    ```sh
-    pip uninstall sparv
-    ```
+        ```sh
+        uv tool uninstall sparv
+        ```
+
+    === "pipx"
+
+        ```sh
+        pipx uninstall sparv
+        ```
+
+    === "pip"
+
+        ```sh
+        pip uninstall sparv
+        ```

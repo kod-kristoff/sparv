@@ -13,28 +13,30 @@ user manual, please refer to the other sections of this documentation.
 
 ## Installation
 
-First, ensure that you have [Python 3.11](https://python.org/) or newer installed by running the following
-command in your terminal:
+Sparv is best installed using [uv](https://docs.astral.sh/uv/), which creates an isolated environment for Sparv
+and its dependencies. This keeps Sparv separate from your system Python, avoids version conflicts, and lets you run
+Sparv from any location. As a bonus, uv will automatically install the correct Python version if you don't already have
+it.
+
+Begin by installing [uv](https://docs.astral.sh/uv/getting-started/installation/) if you don't have it already, by
+running the following command:
+
+=== "Linux or macOS"
+
+    ```sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+
+=== "Windows"
+
+    ```powershell
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    ```
+
+Once uv is installed, run the following command to install Sparv:
 
 ```sh
-python3 --version
-```
-
-> [!NOTE]
->
-> On some systems, the command may be called `python` instead of `python3`.
-
-Next, [install pipx](https://pipx.pypa.io/stable/installation/) if it's not already installed:
-
-```sh
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-```
-
-Once pipx is installed, run the following command to install Sparv:
-
-```sh
-pipx install sparv
+uv tool install sparv
 ```
 
 Verify that the installation was successful by running `sparv`, which should display Sparv's command-line help:

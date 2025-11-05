@@ -1,7 +1,7 @@
 # Sparv – Språkbanken's Analysis Platform
 
 Sparv is a text analysis tool run from the command line. The documentation can be found here:
-https://spraakbanken.gu.se/sparv.
+<https://spraakbanken.gu.se/sparv>.
 
 Check the [changelog](CHANGELOG.md) to see what's new!
 
@@ -19,40 +19,64 @@ If you have any questions, problems or suggestions please contact <sb-sparv@sven
 
 ## Installation
 
-Sparv is available on [PyPI](https://pypi.org/project/sparv/) and can be installed using
-[pip](https://pip.pypa.io/en/stable/installation/) or [pipx](https://pipx.pypa.io/stable/).
-We recommend using pipx, which will install Sparv in an isolated environment while still making it available to be run
-from anywhere.
+Sparv is available on [PyPI](https://pypi.org/project/sparv/) under the name `sparv`. Refer to the [Sparv user
+manual](https://spraakbanken.gu.se/sparv/user-manual/installation-and-setup/) for detailed installation and setup
+instructions.
+
+## Development
+
+To set up a development environment for Sparv, we recommend using [uv](https://docs.astral.sh/uv/) to create a
+virtual environment and install the dependencies.
+
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you don't have it already.
+2. While in the Sparv project directory, run:
+
+   ```sh
+   uv sync
+   ```
+
+   This will create a virtual environment in the `.venv` directory and install the dependencies listed in
+   `pyproject.toml`, including the development dependencies.
+3. Either activate the virtual environment manually:
+
+   ```sh
+   source .venv/bin/activate
+   ```
+
+   or use `uv run <command>` to run commands inside the virtual environment without activating it.
+
+Alternatively, you can set up a virtual environment manually using Python's built-in `venv` module and install the
+dependencies using pip:
 
 ```sh
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-pipx install sparv
-```
-
-Now you should be ready to run the Sparv command! Try it by typing `sparv --help`.
-
-Sparv can be used together with several plugins and third-party software. Please check the [Sparv user
-manual](https://spraakbanken.gu.se/sparv/user-manual/installation-and-setup/) for more details!
-
-## Running tests
-
-If you want to run the tests you will need to clone this project from
-[GitHub](https://github.com/spraakbanken/sparv) since the test data is not distributed with pip.
-
-Before cloning the repository with [git](https://git-scm.com/downloads) make sure you have [Git Large File
-Storage](https://git-lfs.github.com/) installed (`apt install git-lfs`). Some files will not be downloaded correctly
-otherwise. If you happen to clone the repository before installing Git Large File Storage you will have to run `git lfs
-fetch` in order to update the corpus and annotation files.
-
-Install the dependencies, including the dev dependencies. We recommend that you first set up a virtual environment:
-
-```sh
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -e . --group dev
 ```
 
-Now with the virtual environment activated you can run `pytest` from the `sparv` directory. You can run
-particular tests using the provided markers (e.g. `pytest -m swe` to run the Swedish tests only) or via substring
-matching (e.g. `pytest -k "not slow"` to skip the slow tests).
+### Running tests
+
+To run the test suite, make sure you have set up the development environment as described above. You also need to have
+[Git LFS](https://git-lfs.github.com/) installed to get the test data. If you cloned the repository before installing
+Git LFS, you need to run
+
+```sh
+git lfs fetch
+```
+
+to download the test data files.
+
+While in the Sparv project directory, you can run the tests using uv:
+
+```sh
+uv run pytest
+```
+
+Alternatively, if you have activated the virtual environment manually, you can simply run:
+
+```sh
+pytest
+```
+
+You can run specific tests using the provided markers (e.g. `pytest -m swe` to run the Swedish tests only) or via
+substring matching (e.g. `pytest -k "not slow"` to skip the slow tests).
