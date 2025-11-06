@@ -215,6 +215,7 @@ def main(argv: list[str] | None = None) -> bool:
         "autocomplete": "Enable tab completion in bash/zsh",
         "schema": "Print a JSON schema for the Sparv config format",
         "plugins": "Manage Sparv plugins",
+        "dev": "Development commands",
     }
 
     description = [
@@ -248,6 +249,7 @@ def main(argv: list[str] | None = None) -> bool:
         f"   preload          {help['preload']}",
         f"   autocomplete     {help['autocomplete']}",
         f"   schema           {help['schema']}",
+        f"   dev              {help['dev']}",
         "",
         "See 'sparv <command> -h' for help with a specific command",
         "For full documentation, visit https://spraakbanken.gu.se/sparv/docs/",
@@ -449,6 +451,23 @@ def main(argv: list[str] | None = None) -> bool:
         "check", help="Run a health check on all installed plugins", formatter_class=RichHelpFormatter
     )
 
+    # Development
+    dev_parser = subparsers.add_parser(
+        "dev", help=help["dev"], description=help["dev"], formatter_class=RichHelpFormatter
+    )
+
+    dev_subparsers = dev_parser.add_subparsers(
+        dest="dev_command", title="development commands", metavar="<command>"
+    )
+
+    inspect_parser = dev_subparsers.add_parser(
+        "inspect", help="Inspect the contents of a file in the sparv-workdir", formatter_class=RichHelpFormatter
+    )
+    inspect_parser.add_argument("file", help="The file to inspect")
+    inspect_parser.add_argument(
+        "--compression", help="Specify compression type", choices=("none", "gzip", "bzip2", "lzma")
+    )
+
     # Add common arguments
     for subparser in [run_parser, runrule_parser]:
         subparser.add_argument("-f", "--file", nargs="+", default=[], help="Only annotate specified source file(s)")
@@ -615,6 +634,17 @@ def main(argv: list[str] | None = None) -> bool:
             run_plugins_check(args)
         elif args.plugins_command is None:
             plugins.list_installed_plugins()
+        return True
+    if args.command == "dev":
+        if not args.dev_command:
+            dev_parser.print_help()
+            return True
+
+        from sparv.core import dev
+
+        if args.dev_command == "inspect":
+            return dev.inspect_workdir_file(args.file, args.compression)
+
         return True
 
     # Check that a corpus config file is available in the working dir

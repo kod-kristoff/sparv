@@ -7,6 +7,7 @@
 - The `sparv plugins` command now supports (un)installing multiple plugins at once.
 - Plugin installation/uninstallation is now possible in environments where `pip` is not available, if `uv` is
   installed.
+- Added `sparv dev inspect` command for inspecting files in the sparv-workdir.
 
 ### Changed
 
