@@ -356,31 +356,31 @@ rule list_targets:
 
         table.add_row("[b]Exporters[/b]")
         for target, desc, _lang in sorted(snake_storage.export_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Installers[/b]")
         for target, desc, _ in sorted(snake_storage.install_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Uninstallers[/b]")
         for target, desc in sorted(snake_storage.uninstall_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Importers[/b]")
         for target, desc in sorted(snake_storage.import_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Annotators[/b]")
         for target, desc in sorted(snake_storage.named_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Model Builders[/b]")
         for target, desc, _lang in sorted(snake_storage.model_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         table.add_row()
         table.add_row("[b]Custom Rules[/b]")
         for target, desc in sorted(snake_storage.custom_targets):
-            table.add_row("  " + target, desc)
+            table.add_row("  " + target, desc.splitlines()[0])
         console.print(table)
         note = Text.from_markup(
             "[i]Note:[/i] Custom rules need to be declared in the 'custom_annotations' section "
@@ -413,7 +413,7 @@ rule list_exports:
                         language,
                         sparv_config.get("metadata.variety")
                 ):
-                    table.add_row(target, desc)
+                    table.add_row(target, desc.splitlines()[0])
             console.print(table)
 
         if other_exports:
@@ -428,7 +428,7 @@ rule list_exports:
                         language,
                         sparv_config.get("metadata.variety")
                 ):
-                    table.add_row(target, desc)
+                    table.add_row(target, desc.splitlines()[0])
             console.print(table)
 
         console.print(
@@ -566,7 +566,7 @@ rule list_models:
                     language,
                     sparv_config.get("metadata.variety")
                 ):
-                    table.add_row(target, desc)
+                    table.add_row(target, desc.splitlines()[0])
             console.print(table)
 
         table = Table(title="Language-independent models", box=box.SIMPLE, show_header=False, title_justify="left")
@@ -574,7 +574,7 @@ rule list_models:
         table.add_column()
         for target, desc, language in sorted(snake_storage.model_targets):
             if not language:
-                table.add_row(target, desc)
+                table.add_row(target, desc.splitlines()[0])
         console.print(table)
 
         if sparv_config.get("metadata.language") not in registry.languages:
