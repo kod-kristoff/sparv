@@ -36,16 +36,28 @@ _config_default = {}  # Default config
 
 # Dict with info about config structure, prepopulated with some module-independent keys
 config_structure = {
-    "classes": {"_source": "core", "_cfg": Config("classes", datatype=dict)},
+    "classes": {
+        "_source": "core",
+        "_cfg": Config("classes", description="Mapping of annotation classes to annotations", datatype=dict),
+    },  # Default classes are set in apply_presets()
     "custom_annotations": {"_source": "core", "_cfg": Config("custom_annotations", datatype=list)},
     "install": {
         "_source": "core",
         "_cfg": Config("install", description="List of default installers to run", datatype=list),
     },
-    PARENT: {"_source": "core", "_cfg": Config(PARENT, datatype=str | list[str])},
+    PARENT: {
+        "_source": "core",
+        "_cfg": Config(PARENT, description="Path to one or more parent config files", datatype=str | list[str]),
+    },
     MAX_THREADS: {"_source": "core", "_cfg": Config(MAX_THREADS, datatype=dict[str, int])},
-    "preload": {"_source": "core", "_cfg": Config("preload", datatype=list)},
-    "uninstall": {"_source": "core", "_cfg": Config("uninstall", datatype=list)},
+    "preload": {
+        "_source": "core",
+        "_cfg": Config("preload", description="List of processors to preload", datatype=list),
+    },
+    "uninstall": {
+        "_source": "core",
+        "_cfg": Config("uninstall", description="List of default uninstallers to run", datatype=list),
+    },
 }
 
 config_usage = defaultdict(set)  # For each config key, a list of annotators using that key
@@ -429,7 +441,15 @@ def apply_presets() -> None:
         set_value(a, annotations)
 
     # Update classes
-    default_classes = _config_default.get("classes", {})
+    default_classes = _config_default.get(
+        "classes",
+        {
+            "sentence": "segment.sentence",
+            "token": "segment.token",
+            "token:word": "<token>:misc.word",
+            "token:ref": "<token>:misc.ref",
+        },
+    )
     user_classes = _config_user.get("classes", {}).copy()
     _merge_dicts(all_preset_classes, default_classes)
     _merge_dicts(user_classes, all_preset_classes)

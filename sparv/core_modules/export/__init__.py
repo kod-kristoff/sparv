@@ -5,31 +5,44 @@ from typing import Optional
 from sparv.api import Config, SourceStructureParser, wizard
 
 __config__ = [
-    Config("export.default", description="List of exporters to use by default", datatype=list),
+    Config(
+        "export.default",
+        default=["xml_export:pretty"],
+        description="List of exporters to use by default",
+        datatype=list,
+    ),
     Config("export.annotations", description="List of automatic annotations to include in export", datatype=list),
     Config(
         "export.source_annotations",
         description="List of annotations and attributes from the source to include",
         datatype=list,
     ),
-    Config("export.word", description="Annotation to use as token text in export", datatype=str),
+    Config(
+        "export.word", default="<token:word>", description="Annotation to use as token text in export", datatype=str
+    ),
     Config(
         "export.remove_module_namespaces",
+        default=True,
         description="Remove module name prefixes from annotation names in export",
         datatype=bool,
     ),
     Config(
         "export.sparv_namespace",
+        default="",
         description="Prefix to add to the names of all automatically created annotations",
         datatype=str | None,
     ),
     Config(
         "export.source_namespace",
+        default="",
         description="Prefix to add to the names of all annotations from source",
         datatype=str | None,
     ),
     Config(
-        "export.scramble_on", description="What annotation to use as the smallest unit when scrambling", datatype=str
+        "export.scramble_on",
+        default="<sentence>",
+        description="What annotation to use as the smallest unit when scrambling",
+        datatype=str,
     ),
 ]
 

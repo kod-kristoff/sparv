@@ -12,6 +12,7 @@ __config__ = [
     Config("import.source_dir", paths.source_dir, description="Directory containing corpus source files", datatype=str),
     Config(
         "import.importer",
+        default="xml_import:parse",
         description="Importer to use",
         datatype=str,
         choices=lambda: [

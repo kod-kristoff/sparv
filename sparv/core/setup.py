@@ -27,7 +27,7 @@ def check_sparv_version() -> bool | None:
         True if up to date, False if outdated, None if the version file is missing.
     """
     data_dir = paths.get_data_path()
-    version_file = data_dir / VERSION_FILE
+    version_file = data_dir / VERSION_FILE  # type: ignore
     if version_file.is_file():
         return version_file.read_text(encoding="utf-8") == __version__
     return None
@@ -42,10 +42,13 @@ def copy_resource_files(data_dir: pathlib.Path) -> None:
     resources_dir = importlib.resources.files("sparv") / "resources"
     with importlib.resources.as_file(resources_dir) as path:
         for f in path.rglob("*"):
-            rel_f = f.relative_to(resources_dir)
+            rel_f = f.relative_to(resources_dir)  # type: ignore
             if f.is_dir():
                 (data_dir / rel_f).mkdir(parents=True, exist_ok=True)
             elif (data_dir / rel_f).is_file():
+                # Do not overwrite default config file
+                if paths.default_config_file == (data_dir / rel_f):
+                    continue
                 # Only copy if files are different
                 if not filecmp.cmp(f, (data_dir / rel_f)):
                     shutil.copy(data_dir / rel_f, data_dir / rel_f.parent / f"{rel_f.name}.bak")
@@ -107,9 +110,10 @@ def run(sparv_datadir: str | None = None) -> bool:
             "\n[b]Sparv Data Directory Setup[/b]\n\n"
             f"Current data directory: [green]{current_dir or '<not set>'}[/green]{env_message}\n\n"
             "Sparv needs a place to store its configuration files, language models and other data. "
-            "After selecting the directory you want to use for this purpose, Sparv will populate it with a default "
-            "config file and presets. Any existing files in the target directory will be backed up. Any previous "
-            "backups will be overwritten.",
+            "After selecting the directory you want to use for this purpose, Sparv will populate it with presets and "
+            "an empty default configuration file. Any existing presets will be overwritten, but your existing "
+            "configuration file will be preserved. Backup copies of any overwritten files will be created in the same "
+            "directory.",
             width=80,
         )
         console.print(
@@ -122,7 +126,7 @@ def run(sparv_datadir: str | None = None) -> bool:
             width=80,
         )
 
-        if using_env:
+        if using_env and current_dir:
             try:
                 console.print(
                     f"[b red]NOTE:[/b red] Sparv's data directory is currently set to '{current_dir}' using the "
@@ -162,7 +166,7 @@ def run(sparv_datadir: str | None = None) -> bool:
         # Expand any "~" and make the path absolute
         path = path.expanduser().resolve()
         # Create directories
-        dirs = [paths.bin_dir.name, paths.config_dir.name, paths.models_dir.name]
+        dirs = [paths.bin_dir.name, paths.config_dir.name, paths.models_dir.name]  # type: ignore
         path.mkdir(parents=True, exist_ok=True)
         for d in dirs:
             (path / d).mkdir(exist_ok=True)

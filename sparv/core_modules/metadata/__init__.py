@@ -11,6 +11,7 @@ __config__ = [
     Config("metadata.name", description="Human readable name of corpus", datatype=dict[str, str]),
     Config(
         "metadata.language",
+        default="swe",
         description="Language of source files (ISO 639-3)",
         datatype=str | None,
         choices=lambda: [*sorted({l.split("-")[0] for l in registry.languages}), None],

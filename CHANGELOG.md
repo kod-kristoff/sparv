@@ -12,6 +12,8 @@
 ### Changed
 
 - Dropped support for Python 3.10.
+- The default configuration file shipped with Sparv is now empty, and any changes to this file will be preserved when
+  upgrading Sparv and running `sparv setup` again.
 
 ### Fixed
 
