@@ -1022,6 +1022,7 @@ def setup_logging(
     # Set logger to use the lowest selected log level, but never higher than warning (we still want to count warnings)
     log_level = min(logging.WARNING, getattr(logging, log_level.upper()), getattr(logging, log_file_level.upper()))
     socket_logger = logging.getLogger("sparv")
+    socket_logger.propagate = False  # Prevent propagation to root logger
     socket_logger.setLevel(log_level)
     socket_handler = logging.handlers.SocketHandler(*log_server)
     socket_logger.addHandler(socket_handler)

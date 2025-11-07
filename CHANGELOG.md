@@ -19,6 +19,7 @@
 
 - Fixed issue with using Sparv as a library. Sparv can now be invoked multiple times within the same process.
 - Fixed issue with non-breaking spaces in misc:text_headtail.
+- Fixed recursion error when logging to root logger in Sparv modules.
 
 ## [5.3.1] - 2025-08-20
 
