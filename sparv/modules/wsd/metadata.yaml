@@ -45,7 +45,7 @@ other_references:
 tools:
   - name: Sparv wsd
     url: https://github.com/spraakbanken/sparv-wsd
-    license: MIT License
+    license: MIT
 models:
   - name: ALL_512_128_w10_A2_140403_ctx1.bin
     url: https://github.com/spraakbanken/sparv-wsd/blob/master/models/scouse/ALL_512_128_w10_A2_140403_ctx1.bin

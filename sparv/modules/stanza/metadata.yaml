@@ -7,7 +7,7 @@ keywords:
 tools:
   - name: "Stanza"
     url: "https://stanfordnlp.github.io/stanza/"
-    license: "Apache License 2.0"
+    license: "Apache-2.0"
 trained_on: "[SUC3](https://spraakbanken.gu.se/resurser/suc3), [TalbankenSBX](https://spraakbanken.gu.se/resurser/talbanken), [SIC2](https://spraakbanken.gu.se/resurser/sic2)"
 other_references:
   - "Stanza: Peng Qi, Yuhao Zhang, Yuhui Zhang, Jason Bolton and Christopher D. Manning. 2020"
@@ -82,7 +82,7 @@ example_output: |-
 models:
   - name: Stanzamorph
     url: https://spraakbanken.gu.se/resurser/stanzamorph
-    license: CC BY 4.0
+    license: CC-BY-4.0
 description:
   eng: |-
     This annotation contains morphosyntactic features in addition to part-of-speech tags.
@@ -120,7 +120,7 @@ other_references:
 models:
   - name: Stanzamorph
     url: https://spraakbanken.gu.se/resurser/stanzamorph
-    license: CC BY 4.0
+    license: CC-BY-4.0
 tagset: "[UD](https://universaldependencies.org/u/feat/index.html)"
 evaluation_results: ''
 description:
@@ -156,7 +156,7 @@ other_references:
 models:
   - name: Stanzalem
     url: https://spraakbanken.gu.se/resurser/stanzalem
-    license: CC BY 4.0
+    license: CC-BY-4.0
 trained_on: "[SUC3](https://spraakbanken.gu.se/resurser/suc3)"
 evaluation_results: Accuracy = 0.99
 description:
@@ -191,7 +191,7 @@ example_output: |-
 models:
   - name: Stanzasynt
     url: https://spraakbanken.gu.se/resurser/stanzasynt
-    license: CC BY 4.0
+    license: CC-BY-4.0
 trained_on: "[TalbankenSBX](https://spraakbanken.gu.se/resurser/talbanken)"
 tagset: "[MambaDep](https://svn.spraakdata.gu.se/sb-arkiv/pub/mamba.html)"
 evaluation_results: |-
@@ -209,7 +209,7 @@ language_codes:
 tools:
   - name: "Stanza"
     url: "https://stanfordnlp.github.io/stanza/"
-    license: "Apache License 2.0"
+    license: "Apache-2.0"
 keywords:
   - stanza
 standard_reference: ''
