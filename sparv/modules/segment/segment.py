@@ -205,17 +205,20 @@ def do_segmentation(
     else:
         segments = []
 
-    logger.progress(total=len(chunk_spans) + 1)
+    total_chunks = len(chunk_spans)
+    progress_total = min(100, total_chunks + 1)  # At least 2 steps, max 100
+    logger.progress(total=progress_total)
 
     # Now we can segment each chunk span into tokens
-    for start, end in chunk_spans:
+    for i, (start, end) in enumerate(chunk_spans):
         for spanstart, spanend in segmenter.span_tokenize(corpus_text[start:end]):
             spanstart += start  # noqa: PLW2901
             spanend += start  # noqa: PLW2901
             if corpus_text[spanstart:spanend].strip():
                 span = (spanstart, spanend)
                 segments.append(span)
-        logger.progress()
+        if i % max(1, total_chunks // (progress_total - 1)) == 0 or i == total_chunks - 1:
+            logger.progress()
 
     segments.sort()
     out.write(segments)
