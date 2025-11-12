@@ -452,6 +452,10 @@ def rule_helper(
             for annotation in param_value:
                 if not isinstance(annotation, BaseAnnotation):
                     if not annotation:
+                        if param_optional:
+                            rule.parameters[param_name] = None
+                            skip = True
+                            break
                         return False
                     annotation = param_type(annotation)  # noqa: PLW2901
                 rule.configs.update(registry.find_config_variables(annotation.name))
