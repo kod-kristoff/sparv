@@ -251,10 +251,10 @@ class CommonAnnotationMixin(BaseAnnotation):
         Yields:
             The source text of the annotation.
         """
-        if self.source_file not in self._corpus_text:
-            self._corpus_text[self.source_file] = io.read_data(self.source_file, io.TEXT_FILE)
+        if source_file not in self._corpus_text:
+            self._corpus_text[source_file] = io.read_data(source_file, io.TEXT_FILE)
         for start, end in self._read_spans(source_file):
-            yield self._corpus_text[self.source_file][start:end]
+            yield self._corpus_text[source_file][start:end]
 
     @staticmethod
     def _read_attributes(
