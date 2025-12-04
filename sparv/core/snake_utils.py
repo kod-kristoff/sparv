@@ -377,7 +377,7 @@ def rule_helper(
             param_value = config_value
 
         # Output
-        if issubclass(param_type, BaseOutput):
+        if isinstance(param_type, type) and issubclass(param_type, BaseOutput):
             if not isinstance(param_value, (list, tuple)):
                 param_value = [param_value]
             skip = False
@@ -444,7 +444,7 @@ def rule_helper(
             rule.parameters[param_name] = ModelOutput(str(model_path))
             storage.model_outputs.append(model_path)
         # Annotation
-        elif issubclass(param_type, BaseAnnotation):
+        elif isinstance(param_type, type) and issubclass(param_type, BaseAnnotation):
             if not isinstance(param_value, (list, tuple)):
                 param_value = [param_value]
             skip = False
