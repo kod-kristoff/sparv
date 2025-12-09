@@ -82,52 +82,47 @@ class CurrentProgress:
     current_job = None
 
 
+class SparvLogger(logging.Logger):
+    """Custom logger class for Sparv with additional methods."""
+    INTERNAL = 100
+    PROGRESS = 90
+    FINAL = 80
+
+    def progress(
+        self: SparvLogger, progress: int | None = None, advance: int | None = None, total: int | None = None
+    ) -> None:
+        """Log progress of task."""
+        if self.isEnabledFor(self.INTERNAL):
+            self._log(
+                self.INTERNAL,
+                "progress",
+                (),
+                extra={
+                    "progress": progress,
+                    "advance": advance,
+                    "total": total,
+                    "job": CurrentProgress.current_job,
+                    "file": CurrentProgress.current_file,
+                },
+            )
+
+    def export_dirs(self: SparvLogger, dirs: list[str]) -> None:
+        """Send list of export dirs to log handler."""
+        if self.isEnabledFor(self.INTERNAL):
+            self._log(self.INTERNAL, "export_dirs", (), extra={"export_dirs": dirs})
+
+
+# Set SparvLogger as the default logger class
+logging.setLoggerClass(SparvLogger)
+
 # Add internal logging level used for non-logging-related communication from child processes to log handler
-INTERNAL = 100
-logging.addLevelName(INTERNAL, "INTERNAL")
-
-
-def _log_progress(
-    self: logging.Logger, progress: int | None = None, advance: int | None = None, total: int | None = None
-) -> None:
-    """Log progress of task."""
-    if self.isEnabledFor(INTERNAL):
-        self._log(
-            INTERNAL,
-            "progress",
-            (),
-            extra={
-                "progress": progress,
-                "advance": advance,
-                "total": total,
-                "job": CurrentProgress.current_job,
-                "file": CurrentProgress.current_file,
-            },
-        )
-
-
-# Add progress function to logger
-logging.progress = _log_progress
-logging.Logger.progress = _log_progress
+logging.addLevelName(SparvLogger.INTERNAL, "INTERNAL")
 
 # Add logging level used for progress output (must be lower than INTERNAL)
-PROGRESS = 90
-logging.addLevelName(PROGRESS, "PROGRESS")
+logging.addLevelName(SparvLogger.PROGRESS, "PROGRESS")
 
 # Add logging level used for final messages when logging in JSON format, always displayed
-FINAL = 80
-logging.addLevelName(FINAL, "FINAL")
-
-
-def _export_dirs(self: logging.Logger, dirs: list[str]) -> None:
-    """Send list of export dirs to log handler."""
-    if self.isEnabledFor(INTERNAL):
-        self._log(INTERNAL, "export_dirs", (), extra={"export_dirs": dirs})
-
-
-# Add log function to logger
-logging.export_dirs = _export_dirs
-logging.Logger.export_dirs = _export_dirs
+logging.addLevelName(SparvLogger.FINAL, "FINAL")
 
 # Messages from the Sparv core
 messages = {
@@ -187,7 +182,7 @@ class LogLevelCounterHandler(logging.Handler):
 
     def emit(self, record: logging.LogRecord) -> None:
         """Increment level counter for each log message."""
-        if record.levelno < FINAL:
+        if record.levelno < SparvLogger.FINAL:
             self.levelcount[record.levelname] += 1
 
 
@@ -214,7 +209,7 @@ class InternalFilter(logging.Filter):
         Returns:
             True if record is not internal, False otherwise.
         """
-        return record.levelno < INTERNAL
+        return record.levelno < SparvLogger.INTERNAL
 
 
 class ProgressInternalFilter(logging.Filter):
@@ -230,7 +225,7 @@ class ProgressInternalFilter(logging.Filter):
         Returns:
             True if record is not progress or internal, False otherwise.
         """
-        return record.levelno < PROGRESS
+        return record.levelno < SparvLogger.PROGRESS
 
 
 class InternalLogHandler(logging.Handler):
@@ -502,7 +497,7 @@ class SparvLogHandler:
 
         # Internal log handler
         internal_handler = InternalLogHandler(self.export_dirs, self.progress, self.current_jobs, self.job_ids)
-        internal_handler.setLevel(INTERNAL)
+        internal_handler.setLevel(SparvLogger.INTERNAL)
         self.logger.addHandler(internal_handler)
 
     def setup_bar(self) -> None:
@@ -545,7 +540,7 @@ class SparvLogHandler:
             msg: Message to print.
         """
         if self.json:
-            self.logger.log(FINAL, msg)
+            self.logger.log(SparvLogger.FINAL, msg)
         else:
             console.print(Text(msg, style="green"))
 
@@ -556,7 +551,7 @@ class SparvLogHandler:
             msg: Message to print.
         """
         if self.json:
-            self.logger.log(FINAL, msg)
+            self.logger.log(SparvLogger.FINAL, msg)
         else:
             console.print(Text(msg, style="yellow"))
 
@@ -567,7 +562,7 @@ class SparvLogHandler:
             msg: Message to print.
         """
         if self.json:
-            self.logger.log(FINAL, msg)
+            self.logger.log(SparvLogger.FINAL, msg)
         else:
             console.print(Text(msg, style="red"))
 
@@ -727,7 +722,7 @@ class SparvLogHandler:
                 percentage = (100 * record.done) // record.total
                 if percentage > self.last_percentage:
                     self.last_percentage = percentage
-                    self.logger.log(PROGRESS, f"{percentage}%")  # noqa: G004
+                    self.logger.log(SparvLogger.PROGRESS, f"{percentage}%")  # noqa: G004
 
             if record.done == record.total:
                 self.stop()

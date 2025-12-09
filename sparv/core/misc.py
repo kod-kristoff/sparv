@@ -6,6 +6,10 @@ import logging
 import re
 from collections import OrderedDict, defaultdict
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sparv.core.log_handler import SparvLogger
 
 
 class SparvErrorMessage(Exception):  # noqa: N818
@@ -32,7 +36,7 @@ class SparvErrorMessage(Exception):  # noqa: N818
         )
 
 
-def get_logger(name: str) -> logging.Logger:
+def get_logger(name: str) -> SparvLogger:
     """Get a logger that is a child of 'sparv.modules'.
 
     Logging in Sparv modules should always be done using the logger returned by this function.
