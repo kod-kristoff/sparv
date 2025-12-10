@@ -223,6 +223,14 @@ class MySQL:
         """
         self.execute(f"DROP TABLE IF EXISTS {_atomseq(tables)};")
 
+    def drop_view(self, *views: str) -> None:
+        """Drop the specified views if they exist.
+
+        Args:
+            views: The names of the views to drop.
+        """
+        self.execute(f"DROP VIEW IF EXISTS {_atomseq(views)};")
+
     def rename_table(self, tables: dict[str, str]) -> None:
         """Rename tables in the database.
 
