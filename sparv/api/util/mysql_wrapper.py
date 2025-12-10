@@ -22,6 +22,19 @@ class MySQL:
 
     binaries = ("mysql", "mariadb")
 
+    def __enter__(self) -> MySQL:
+        """Enter the context and return the MySQL instance.
+
+        Returns:
+            The MySQL instance itself.
+        """
+        return self
+
+    def __exit__(
+        self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: object
+    ) -> None:
+        """Exit the context."""
+
     def __init__(
         self,
         database: str | None = None,
