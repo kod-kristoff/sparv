@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+import yaml.composer
+import yaml.parser
 import yaml.scanner
 
 try:
@@ -86,7 +88,7 @@ def read_yaml(yaml_file: str | Path) -> dict:
     try:
         with Path(yaml_file).open(encoding="utf-8") as f:
             data = yaml.load(f, Loader=SafeLoader)
-    except yaml.parser.ParserError as e:
+    except (yaml.parser.ParserError, yaml.composer.ComposerError) as e:
         raise SparvErrorMessage("Could not parse the configuration file:\n" + str(e)) from e
     except yaml.scanner.ScannerError as e:
         raise SparvErrorMessage("An error occurred while reading the configuration file:\n" + str(e)) from e
