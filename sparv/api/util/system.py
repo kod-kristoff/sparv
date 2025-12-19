@@ -68,7 +68,7 @@ def call_java(
 
     Returns:
         A tuple with `stdout` and `stderr`, or the process if `return_command` is `True`.
-        If `verbose` is `True`, `stderr` is an empty string.
+            If `verbose` is `True`, `stderr` is an empty string.
     """
     assert isinstance(arguments, (list, tuple))
     assert isinstance(options, (list, tuple))
@@ -125,7 +125,7 @@ def call_binary(
 
     Returns:
         A tuple with `stdout` and `stderr`, or the process if `return_command` is `True`.
-        If `verbose` is `True`, `stderr` is an empty string.
+            If `verbose` is `True`, `stderr` is an empty string.
 
     Raises:
         OSError: If an error occurs while calling the binary.

@@ -195,26 +195,26 @@ def chain(annotations: Iterable[dict], default: Any = None) -> Generator[tuple]:
     Returns:
         A generator that yields tuples with the original key and the final value.
 
-    E.g., token.sentence + sentence.id -> token.sentence-id
+            E.g., token.sentence + sentence.id -> token.sentence-id
 
-    >>> from pprint import pprint
-    >>> pprint(dict(
-    ...   chain([{"w:1": "s:A",
-    ...           "w:2": "s:A",
-    ...           "w:3": "s:B",
-    ...           "w:4": "s:C",
-    ...           "w:5": "s:missing"},
-    ...          {"s:A": "text:I",
-    ...           "s:B": "text:II",
-    ...           "s:C": "text:mystery"},
-    ...          {"text:I": "The Bible",
-    ...           "text:II": "The Samannaphala Sutta"}],
-    ...         default="The Principia Discordia")))
-    {'w:1': 'The Bible',
-     'w:2': 'The Bible',
-     'w:3': 'The Samannaphala Sutta',
-     'w:4': 'The Principia Discordia',
-     'w:5': 'The Principia Discordia'}
+            >>> from pprint import pprint
+            >>> pprint(dict(
+            ...   chain([{"w:1": "s:A",
+            ...           "w:2": "s:A",
+            ...           "w:3": "s:B",
+            ...           "w:4": "s:C",
+            ...           "w:5": "s:missing"},
+            ...          {"s:A": "text:I",
+            ...           "s:B": "text:II",
+            ...           "s:C": "text:mystery"},
+            ...          {"text:I": "The Bible",
+            ...           "text:II": "The Samannaphala Sutta"}],
+            ...         default="The Principia Discordia")))
+            {'w:1': 'The Bible',
+            'w:2': 'The Bible',
+            'w:3': 'The Samannaphala Sutta',
+            'w:4': 'The Principia Discordia',
+            'w:5': 'The Principia Discordia'}
     """
 
     def follow(key: Any) -> Any:

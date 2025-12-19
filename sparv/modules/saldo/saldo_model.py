@@ -203,16 +203,16 @@ def read_lmf(
     Returns:
         A dictionary representing the lexicon.
 
-        The structure is as follows:
-        - lexicon = {wordform: {{annotation-type: annotation}: (set(possible-tags), set(tuples-with-following-words),
-          gap-allowed-boolean, is-particle-verb-boolean)}}
-        - annotation-type is the type of annotation (currently: 'gf' for baseform, 'lem' for lemgram or 'saldo' for
-          SALDO id)
-        - annotation is the value of the annotation
-        - possible-tags is a set of possible POS tags for the wordform
-        - tuples-with-following-words is a set of tuples with the following words of a multi-word expression
-        - gap-allowed-boolean indicates if a gap is allowed (True or False)
-        - is-particle-verb-boolean indicates if the word is a particle verb (True or False)
+            The structure is as follows:
+            - lexicon = {wordform: {{annotation-type: annotation}: (set(possible-tags),
+              set(tuples-with-following-words), gap-allowed-boolean, is-particle-verb-boolean)}}
+            - annotation-type is the type of annotation (currently: 'gf' for baseform, 'lem' for lemgram or 'saldo' for
+              SALDO id)
+            - annotation is the value of the annotation
+            - possible-tags is a set of possible POS tags for the wordform
+            - tuples-with-following-words is a set of tuples with the following words of a multi-word expression
+            - gap-allowed-boolean indicates if a gap is allowed (True or False)
+            - is-particle-verb-boolean indicates if the word is a particle verb (True or False)
     """
     if verbose:
         logger.info("Reading XML lexicon")

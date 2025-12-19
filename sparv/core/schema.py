@@ -436,7 +436,7 @@ def build_json_schema(config_structure: dict) -> dict:
 
         Returns:
             A tuple with two values. The first is either a datatype object or a list of datatype objects, and the
-            second is a tuple of conditions (possibly empty).
+                second is a tuple of conditions (possibly empty).
 
         Raises:
             ValueError: If the datatype is not supported.

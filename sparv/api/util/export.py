@@ -50,7 +50,7 @@ def gather_annotations(
 
     Returns:
         A `spans_dict` and an `annotation_dict` if `flatten` is `True`, otherwise returns `span_positions` and
-        `annotation_dict`.
+            `annotation_dict`.
 
     Raises:
         SparvErrorMessage: If the source file is not found for header annotations.
@@ -365,7 +365,7 @@ def get_annotation_names(
 
     Returns:
         A list of annotations, a list of token attribute names, a dictionary with translation from annotation names to
-        export names.
+            export names.
     """
     # Combine all annotations
     all_annotations = _remove_duplicates(list(annotations) + list(source_annotations or []))

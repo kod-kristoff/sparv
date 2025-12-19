@@ -232,7 +232,8 @@ class SaldoCompLexicon:
 
         Returns:
             The lexicon entry for the word, or an empty list if not found.
-            The entry is a list of tuples, each containing the lemgram, SALDO MSD, SALDO POS, and list of SUC POS tags.
+                The entry is a list of tuples, each containing the lemgram, SALDO MSD, SALDO POS, and list of SUC POS
+                tags.
         """
         if word.lower() == word:
             annotation_tag_pairs = self.lexicon.get(word, [])
@@ -363,7 +364,7 @@ class InFileLexicon:
 
         Returns:
             The lexicon entry for the word, or an empty list if not found.
-            The entry is a list of tuples, each containing the word and its POS tag.
+                The entry is a list of tuples, each containing the word and its POS tag.
         """
         return list(self.lexicon.get(word, []))
 
@@ -608,7 +609,7 @@ def three_consonant_rule(compound: list[str]) -> list[list[str]]:
 
     Returns:
         A list of expanded compounds.
-        e.g. ["glas", "skål"] --> [["glas", "skål"], ["glass", "skål"]]
+            e.g. ["glas", "skål"] --> [["glas", "skål"], ["glass", "skål"]]
     """
     combinations = []
     suffix = compound[-1]
@@ -642,7 +643,7 @@ def rank_compounds(
 
     Returns:
         A list of tuples, each containing the score and the compound.
-        The list is sorted according to the length of the compound, the probability score, and the compound itself.
+            The list is sorted according to the length of the compound, the probability score, and the compound itself.
     """
     ranklist = []
     for clist in compounds:
@@ -684,8 +685,8 @@ def compound(
 
     Returns:
         A list of lists of tuples, with possible compound analyses for the word.
-        Each inner list represents a possible segmentation of the word, and each tuple contains the analysis of the
-        different segments. Each segment is represented as a tuple of (string, lemgram, list of SUC POS tags).
+            Each inner list represents a possible segmentation of the word, and each tuple contains the analysis of the
+            different segments. Each segment is represented as a tuple of (string, lemgram, list of SUC POS tags).
     """
     if len(w) > MAX_WORD_LEN or INVALID_REGEX.search(w) or any(w.startswith(p) for p in INVALID_PREFIXES):
         return []
@@ -749,7 +750,7 @@ def make_complem_and_compwf(
 
     Returns:
         A tuple containing the list of compound lemgrams and the list of compound wordforms, both in the form of a
-        CWB set.
+            CWB set.
     """
     complem_list = []
     compwf_list = []

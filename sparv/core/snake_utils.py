@@ -1079,7 +1079,7 @@ def make_param_dict(params: OrderedDict[str, inspect.Parameter]) -> dict:
 
     Returns:
         Dictionary with parameter names as keys and tuples with default value, type, whether it is a list, and whether
-        it is optional as values.
+            it is optional as values.
     """
     param_dict = {}
     for p, v in params.items():

@@ -11,6 +11,7 @@ import zipfile
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from pathlib import Path
+from types import UnionType
 from typing import Any, Self
 
 import requests
@@ -332,10 +333,10 @@ class CommonAnnotationMixin(BaseAnnotation):
 
         Returns:
             A tuple of two lists.
-            The first one is a list with n (= total number of parents) elements where every element is a list
-            of indices in the child annotation.
-            The second one is a list of orphans, i.e. containing indices in the child annotation that have no parent.
-            Both parents and children are sorted according to their position in the source file.
+                The first one is a list with n (= total number of parents) elements where every element is a list of
+                indices in the child annotation. The second one is a list of orphans, i.e. containing indices in the
+                child annotation that have no parent. Both parents and children are sorted according to their position
+                in the source file.
         """
         parent_spans, child_spans = self._read_parents_and_children(source_file, self, child)
         parent_children = []
@@ -404,7 +405,7 @@ class CommonAnnotationMixin(BaseAnnotation):
 
         Returns:
             A list with n (= total number of children) elements where every element is an index in the parent
-            annotation, or None when no parent is found.
+                annotation, or None when no parent is found.
         """
         parent_spans, child_spans = self._read_parents_and_children(source_file, parent, self)
         parent_index_spans = enumerate(parent_spans)
@@ -506,11 +507,10 @@ class Annotation(CommonAnnotationMixin, CommonMixin, BaseAnnotation):
 
         Returns:
             A tuple of two lists.
-
-            The first one is a list with n (= total number of parents) elements where every element is a list
-            of indices in the child annotation.
-            The second one is a list of orphans, i.e. containing indices in the child annotation that have no parent.
-            Both parents and children are sorted according to their position in the source file.
+                The first one is a list with n (= total number of parents) elements where every element is a list of
+                indices in the child annotation. The second one is a list of orphans, i.e. containing indices in the
+                child annotation that have no parent. Both parents and children are sorted according to their position
+                in the source file.
         """
         return self._get_children(self.source_file, child, orphan_alert)
 
@@ -526,7 +526,7 @@ class Annotation(CommonAnnotationMixin, CommonMixin, BaseAnnotation):
 
         Returns:
             An iterator with one element for each parent. Each element is an iterator of values in the child annotation.
-            If `append_orphans` is `True`, the last element is an iterator of orphans.
+                If `append_orphans` is `True`, the last element is an iterator of orphans.
         """
         return self._get_child_values(self.source_file, child, append_orphans, orphan_alert)
 
@@ -539,7 +539,7 @@ class Annotation(CommonAnnotationMixin, CommonMixin, BaseAnnotation):
 
         Returns:
             A list with n (= total number of children) elements where every element is an index in the parent
-            annotation, or `None` when no parent is found.
+                annotation, or `None` when no parent is found.
         """
         return self._get_parents(self.source_file, parent, orphan_alert)
 
@@ -730,10 +730,10 @@ class AnnotationAllSourceFiles(CommonAnnotationMixin, CommonAllSourceFilesMixin,
 
         Returns:
             A tuple of two lists.
-            The first one is a list with n (= total number of parents) elements where every element is a list
-            of indices in the child annotation.
-            The second one is a list of orphans, i.e. containing indices in the child annotation that have no parent.
-            Both parents and children are sorted according to their position in the source file.
+                The first one is a list with n (= total number of parents) elements where every element is a list of
+                indices in the child annotation. The second one is a list of orphans, i.e. containing indices in the
+                child annotation that have no parent. Both parents and children are sorted according to their position
+                in the source file.
         """
         return self._get_children(source_file, child, orphan_alert)
 
@@ -750,7 +750,7 @@ class AnnotationAllSourceFiles(CommonAnnotationMixin, CommonAllSourceFilesMixin,
 
         Returns:
             An iterator with one element for each parent. Each element is an iterator of values in the child annotation.
-            If append_orphans is True, the last element is an iterator of orphans.
+                If append_orphans is True, the last element is an iterator of orphans.
         """
         return self._get_child_values(source_file, child, append_orphans, orphan_alert)
 
@@ -764,7 +764,7 @@ class AnnotationAllSourceFiles(CommonAnnotationMixin, CommonAllSourceFilesMixin,
 
         Returns:
             A list with n (= total number of children) elements where every element is an index in the parent
-            annotation, or None when no parent is found.
+                annotation, or None when no parent is found.
         """
         return self._get_parents(source_file, parent, orphan_alert)
 
@@ -1404,7 +1404,7 @@ class Config(Any):
         name: str,
         default: Any = None,
         description: str | None = None,
-        datatype: type | None = None,
+        datatype: type | UnionType | None = None,
         choices: Iterable | Callable | None = None,
         pattern: str | None = None,
         min_len: int | None = None,
@@ -1422,9 +1422,9 @@ class Config(Any):
             description: A mandatory description of the configuration key.
             datatype: A type specifying the allowed datatype(s). Supported types are `int`, `float`, `str`, `bool`,
                 `None`, `type(None)`, `list`, and `dict`. For `list` and `dict`, you can specify the allowed types for
-                the elements by using type arguments, like `list[str]` or `dict[str, int]`. More complex types (e.g.,
-                further nesting) than these are not supported. `type(None)` is used to allow `None` as a value. `None`
-                is the default value, and means that any datatype is allowed.
+                the elements by using type arguments, like `list[str]` or `dict[str, int]`. Union types are supported,
+                e.g., `int | str`. More complex types (e.g., further nesting) than these are not supported. `type(None)`
+                is used to allow `None` as a value. `None` is the default value, and means that any datatype is allowed.
             choices: An iterable of valid choices, or a function that returns such an iterable.
             pattern: A regular expression matching valid values (only for the datatype `str`).
             min_len: An `int` representing the minimum length of the value.
