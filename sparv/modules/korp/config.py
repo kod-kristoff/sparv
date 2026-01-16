@@ -6,6 +6,8 @@ import subprocess
 from collections import defaultdict
 from pathlib import Path
 
+import markdown
+
 from sparv.api import (
     AnnotationName,
     Config,
@@ -452,6 +454,8 @@ def get_presets(remote_host: str, config_dir: str) -> dict[str, str]:
 def build_description(description: dict | str | None, short_description: dict | str | None) -> dict[str, str] | str:
     """Combine description and short_description if they exist.
 
+    Description may contain markdown; convert to HTML.
+
     Args:
         description: Description of the corpus.
         short_description: Short description of the corpus.
@@ -460,8 +464,13 @@ def build_description(description: dict | str | None, short_description: dict | 
         Dictionary of descriptions for each language.
     """
     if isinstance(description, dict):
+        for lang, desc in description.items():
+            if desc is not None:
+                description[lang] = markdown.markdown(str(desc))
         description_dd = defaultdict(lambda: None, description)
     else:
+        if description is not None:
+            description = markdown.markdown(str(description))
         description_dd = defaultdict(lambda: description if description is None else str(description))
 
     if isinstance(short_description, dict):
