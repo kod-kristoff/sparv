@@ -6,10 +6,9 @@ import logging
 import re
 from collections import OrderedDict, defaultdict
 from collections.abc import Iterable
-from typing import TYPE_CHECKING
+from typing import cast
 
-if TYPE_CHECKING:
-    from sparv.core.log_handler import SparvLogger
+from sparv.core.logger import SparvLogger, ensure_logger_class
 
 
 class SparvErrorMessage(Exception):  # noqa: N818
@@ -47,9 +46,10 @@ def get_logger(name: str) -> SparvLogger:
     Returns:
         Logger object.
     """
+    ensure_logger_class()
     if not name.startswith("sparv.modules"):
         name = f"sparv.modules.{name}"
-    return logging.getLogger(name)
+    return cast(SparvLogger, logging.getLogger(name))
 
 
 def parse_annotation_list(

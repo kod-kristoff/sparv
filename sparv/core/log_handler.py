@@ -63,6 +63,7 @@ from snakemake_interface_logger_plugins.common import LogEvent
 
 from sparv.core import io
 from sparv.core.console import console
+from sparv.core.logger import CurrentProgress, SparvLogger, ensure_logger_class
 from sparv.core.misc import SparvErrorMessage
 from sparv.core.paths import paths
 
@@ -71,58 +72,7 @@ LOG_FORMAT_DEBUG = "%(asctime)s - %(name)s (%(process)d) - %(levelname)s - %(mes
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 TIME_FORMAT = "%H:%M:%S"
 
-
-class CurrentProgress:
-    """Class to store current file and job for logging progress.
-
-    These are set by setup_logging() and used by _log_progress().
-    """
-
-    current_file = None
-    current_job = None
-
-
-class SparvLogger(logging.Logger):
-    """Custom logger class for Sparv with additional methods."""
-    INTERNAL = 100
-    PROGRESS = 90
-    FINAL = 80
-
-    def progress(
-        self: SparvLogger, progress: int | None = None, advance: int | None = None, total: int | None = None
-    ) -> None:
-        """Log progress of task."""
-        if self.isEnabledFor(self.INTERNAL):
-            self._log(
-                self.INTERNAL,
-                "progress",
-                (),
-                extra={
-                    "progress": progress,
-                    "advance": advance,
-                    "total": total,
-                    "job": CurrentProgress.current_job,
-                    "file": CurrentProgress.current_file,
-                },
-            )
-
-    def export_dirs(self: SparvLogger, dirs: list[str]) -> None:
-        """Send list of export dirs to log handler."""
-        if self.isEnabledFor(self.INTERNAL):
-            self._log(self.INTERNAL, "export_dirs", (), extra={"export_dirs": dirs})
-
-
-# Set SparvLogger as the default logger class
-logging.setLoggerClass(SparvLogger)
-
-# Add internal logging level used for non-logging-related communication from child processes to log handler
-logging.addLevelName(SparvLogger.INTERNAL, "INTERNAL")
-
-# Add logging level used for progress output (must be lower than INTERNAL)
-logging.addLevelName(SparvLogger.PROGRESS, "PROGRESS")
-
-# Add logging level used for final messages when logging in JSON format, always displayed
-logging.addLevelName(SparvLogger.FINAL, "FINAL")
+ensure_logger_class()
 
 # Messages from the Sparv core
 messages = {
