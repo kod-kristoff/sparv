@@ -109,6 +109,11 @@ LABELS = {
             default=["swe", "eng"],
             datatype=list[str],
         ),
+        Config(
+            "korp.deptree",
+            description="Configuration for dependency tree visualization in Korp.",
+            datatype=dict,
+        )
     ],
 )
 def config(
@@ -145,6 +150,7 @@ def config(
     config_dir: str = Config("korp.config_dir"),
     keep_undefined_annotations: bool = Config("korp.keep_undefined_annotations"),
     languages: list[str] = Config("korp.languages"),
+    deptree: dict | None = Config("korp.deptree"),
     out: Export = Export("korp.config/[metadata.id].yaml"),
 ) -> None:
     """Create Korp config file for the corpus, to be served by the Korp backend and used by the frontend.
@@ -184,6 +190,7 @@ def config(
         keep_undefined_annotations: Set to True to include all annotations in config, even those without an annotation
             definition/preset.
         languages: List of languages used in the Korp interface.
+        deptree: Configuration for dependency tree visualization in Korp.
         out: YAML file to create.
     """
     corpus_name = get_corpus_name([korp_name, name], corpus_id, languages)
@@ -199,6 +206,7 @@ def config(
         "custom_attributes": custom_annotations,
         "morphology": morphology,
         "reading_mode": reading_mode,
+        "deptree": deptree,
     }
 
     config_dict.update({k: v for k, v in optional.items() if v})
