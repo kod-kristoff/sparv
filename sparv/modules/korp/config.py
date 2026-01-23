@@ -41,7 +41,7 @@ HIDDEN_ANNOTATIONS = [
 ]
 
 # Annotations (using export names) to always include (if they exist), that would normally be excluded
-INCLUDED_ANNOTATIONS = ()
+INCLUDED_ANNOTATIONS = set()
 
 LABELS = {
     "sentence": {
@@ -341,8 +341,8 @@ def build_annotations(
     export_names: dict,
     hidden_annotations: list,
     presets: dict,
-    include: list,
-    token: str,
+    include: set,
+    token: AnnotationName,
     text_annotation: str | None = None,
     cwb_annotations: bool = True,
     keep_undefined_annotations: bool = False,
@@ -355,7 +355,7 @@ def build_annotations(
         export_names: Dictionary of export names for annotations.
         hidden_annotations: List of annotations to exclude.
         presets: Dictionary of available presets.
-        include: List of annotations to always include.
+        include: Annotations to always include.
         token: The token annotation.
         text_annotation: The text annotation.
         cwb_annotations: Whether to use CWB annotations.
@@ -430,7 +430,7 @@ def build_annotations(
     return token_annotations, struct_annotations, text_annotations
 
 
-def get_presets(remote_host: str, config_dir: str) -> dict[str, str]:
+def get_presets(remote_host: str | None, config_dir: str) -> dict[str, str]:
     """Get dictionary of presets from file system.
 
     Args:

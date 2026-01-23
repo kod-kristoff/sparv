@@ -75,7 +75,7 @@ def lemgram_sql(
     lemgram: AnnotationAllSourceFiles = AnnotationAllSourceFiles("<token:lemgram>"),
 ) -> None:
     """Create lemgram index SQL file."""
-    corpus = corpus.upper()
+    corpus_upper = corpus.upper()
     result = defaultdict(int)
 
     logger.progress(total=len(source_files) + 1)
@@ -89,7 +89,7 @@ def lemgram_sql(
 
     mysql = MySQL(output=out)
     mysql.create_table(MYSQL_TABLE, drop=False, **MYSQL_INDEX)
-    mysql.delete_rows(MYSQL_TABLE, {"corpus": corpus})
+    mysql.delete_rows(MYSQL_TABLE, {"corpus": corpus_upper})
     mysql.set_names()
 
     rows = []
@@ -97,7 +97,7 @@ def lemgram_sql(
         rows.append(
             {
                 "lemgram": lg,
-                "corpus": corpus,
+                "corpus": corpus_upper,
                 "freq": freq,
             }
         )
