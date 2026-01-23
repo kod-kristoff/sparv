@@ -7,7 +7,12 @@ from sparv.api import Config, wizard
 from sparv.core import registry
 
 __config__ = [
-    Config("metadata.id", description="Machine name of corpus (a-z, 0-9, -)", datatype=str, pattern=r"^[a-z0-9-]+$"),
+    Config(
+        "metadata.id",
+        description="Machine name of corpus (a-z, 0-9, -, _)",
+        datatype=str,
+        pattern=r"^[a-z0-9]+([-_]+[a-z0-9]+)*$",
+    ),
     Config("metadata.name", description="Human readable name of corpus", datatype=dict[str, str]),
     Config(
         "metadata.language",
