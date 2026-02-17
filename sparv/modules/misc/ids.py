@@ -3,6 +3,7 @@
 import math
 import random
 from binascii import hexlify
+from collections.abc import Collection
 from pathlib import Path
 
 from sparv.api import (
@@ -95,13 +96,15 @@ def ids(
 
     ann = list(annotation.read())
     out_annotation = []
+    used_ids: set[str] = set()
     logger.progress(total=len(ann) + 1)
     id_length = _get_id_length(len(ann))
     # Use source filename and annotation name as seed for the IDs
     _reset_id(f"{source_file}/{annotation}")
     for _ in ann:
-        new_id = _make_id(id_length, prefix, out_annotation)
+        new_id = _make_id(id_length, prefix, used_ids)
         out_annotation.append(new_id)
+        used_ids.add(new_id)
         logger.progress()
     out.write(out_annotation)
     logger.progress()
@@ -128,11 +131,11 @@ def _reset_id(seed: str) -> None:
         seed: Seed for the random number generator.
         max_ids: Maximum number of IDs to generate. If provided, this will determine the length of the IDs.
     """
-    seed = int(hexlify(seed.encode()), 16)  # For random.seed to work consistently regardless of platform
-    random.seed(seed)
+    seed_int = int(hexlify(seed.encode()), 16)  # For random.seed to work consistently regardless of platform
+    random.seed(seed_int)
 
 
-def _make_id(id_length: int, prefix: str, existing_ids: tuple[str, ...] = ()) -> str:
+def _make_id(id_length: int, prefix: str, existing_ids: Collection[str] = ()) -> str:
     """Create a unique identifier with a given prefix.
 
     Args:
