@@ -12,7 +12,6 @@ from rich.highlighter import ReprHighlighter
 from rich.padding import Padding
 from rich.table import Table
 from rich.text import Text
-from snakemake.logging import logger
 
 from sparv.api import SparvErrorMessage, util
 from sparv.core import config as sparv_config
@@ -56,6 +55,15 @@ def make_rules(config_missing: bool) -> None:
     # Create custom rules
     for custom_rule_obj in sparv_config.get("custom_annotations", []):
         module_name, f_name = custom_rule_obj["annotator"].split(":")
+        if module_name not in registry.modules:
+            raise SparvErrorMessage(
+                f"Module '{module_name}' not found for custom annotator '{custom_rule_obj['annotator']}'."
+            )
+        if f_name not in registry.modules[module_name].functions:
+            raise SparvErrorMessage(
+                f"Processor '{f_name}' not found in module '{module_name}' for custom annotator "
+                "'{custom_rule_obj['annotator']}'."
+            )
         annotator = registry.modules[module_name].functions[f_name]
         make_rule(module_name, f_name, annotator, config_missing, custom_rule_obj)
 
