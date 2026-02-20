@@ -1,5 +1,5 @@
 [project]
-name = "sparv-stanza"
+name = "sparv-modules-stanza"
 version = "5.4.0"
 description = "Add your description here"
 readme = "README.md"

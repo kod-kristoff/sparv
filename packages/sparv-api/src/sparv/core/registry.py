@@ -15,7 +15,6 @@ from types import ModuleType
 from typing import Any, Callable, List, Tuple, TypeVar  # noqa: UP035
 
 import typing_inspect
-
 from sparv.api.classes import (
     BaseOutput,
     Config,
@@ -139,9 +138,13 @@ def find_modules(no_import: bool = False, find_custom: bool = False, skip_langua
 
     from packaging.requirements import Requirement
 
-    from sparv import __version__ as sparv_version
+    # from sparv import __version__ as sparv_version
 
-    modules_full_path = paths.sparv_path / paths.modules_dir
+    print(f"{paths.sparv_path=}")
+    modules_full_path = paths.sparv_path.parent.parent.parent / "sparv-modules" / "src" / "sparv" / paths.modules_dir
+    modules_stanza_full_path = (
+        paths.sparv_path.parent.parent.parent / "sparv-modules-stanza" / "src" / "sparv" / paths.modules_dir
+    )
     core_modules_full_path = paths.sparv_path / paths.core_modules_dir
 
     module_names = []
@@ -149,9 +152,12 @@ def find_modules(no_import: bool = False, find_custom: bool = False, skip_langua
     for full_path, path, include in (
         (core_modules_full_path, core_modules_path, False),
         (modules_full_path, modules_path, True),
+        (modules_stanza_full_path, modules_path, True),
     ):
+        print(f"{full_path=}, {path=}, {include=}")
         found_modules = pkgutil.iter_modules([str(full_path)])
         for module in found_modules:
+            print(f"{module=}")
             if include:
                 # Don't include core modules in the returned list of modules, as they are only used for configuration
                 module_names.append(module.name)
